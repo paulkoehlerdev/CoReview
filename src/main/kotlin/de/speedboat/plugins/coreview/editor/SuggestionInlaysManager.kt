@@ -11,6 +11,7 @@ import com.intellij.openapi.util.Key
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.util.concurrency.annotations.RequiresEdt
 import com.intellij.util.ui.JBUI
+import de.speedboat.plugins.coreview.services.CoReviewService
 import java.awt.Dimension
 import java.awt.Font
 import java.awt.event.ComponentAdapter
@@ -45,10 +46,11 @@ class SuggestionInlaysManager(val editor: EditorImpl) : Disposable {
     }
 
     @RequiresEdt
-    fun insertAfter(lineIndex: Int, component: JComponent): Disposable? {
+    fun insertAfter(lineIndex: Int, component: JComponent, suggestion: CoReviewService.SuggestionInformation): Disposable? {
         if (Disposer.isDisposed(this)) return null
 
         val wrappedComponent = ComponentWrapper(component)
+        val gutterRenderer = SeverityIconRenderer(suggestion)
         val offset = editor.document.getLineEndOffset(lineIndex)
 
         return EditorEmbeddedComponentManager.getInstance()
@@ -56,7 +58,7 @@ class SuggestionInlaysManager(val editor: EditorImpl) : Disposable {
                 editor, wrappedComponent,
                 EditorEmbeddedComponentManager.Properties(
                     EditorEmbeddedComponentManager.ResizePolicy.none(),
-                    null,
+                    { gutterRenderer },
                     true,
                     false,
                     0,
