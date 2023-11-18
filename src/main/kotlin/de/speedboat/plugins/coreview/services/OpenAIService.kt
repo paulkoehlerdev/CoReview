@@ -85,7 +85,8 @@ You must answer strictly and only in following JSON:
             thisLogger().warn("OpenAI response received: $suggestions")
 
             return try {
-                val extractedJsonString = jsonString.substring(jsonString.indexOf('['), jsonString.lastIndexOf(']') + 1)
+                val extractedJsonString =
+                    suggestions.substring(suggestions.indexOf('['), suggestions.lastIndexOf(']') + 1)
                 Json.fromJson(extractedJsonString, Array<Suggestion>::class.java).toList()
             } catch (e: Exception) {
                 thisLogger().warn(e)
