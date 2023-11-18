@@ -8,29 +8,34 @@ import com.intellij.collaboration.ui.codereview.CodeReviewChatItemUIUtil
 import com.intellij.collaboration.ui.codereview.comment.CodeReviewCommentUIUtil
 import com.intellij.openapi.util.text.HtmlBuilder
 import com.intellij.openapi.util.text.HtmlChunk
+import com.intellij.ui.components.JBLabel
 import com.intellij.util.text.JBDateFormat
 import com.intellij.util.ui.UIUtil
+import de.speedboat.plugins.coreview.services.CoReviewService
 import java.util.*
 import javax.swing.Icon
 import javax.swing.JComponent
 import javax.swing.JEditorPane
-import javax.swing.JLabel
 
 // copied mainly from JetBrains
 object ReviewCommentComponent {
 
     fun create(
+        coReviewService: CoReviewService,
         commentAuthorName: String,
         commentAuthorAvatar: Icon,
-        commentBody: String,
-        type: CodeReviewChatItemUIUtil.ComponentType = CodeReviewChatItemUIUtil.ComponentType.FULL
+        suggestionInformation: CoReviewService.SuggestionInformation,
+        type: CodeReviewChatItemUIUtil.ComponentType = CodeReviewChatItemUIUtil.ComponentType.COMPACT
     ): JComponent {
 
         val titlePane = createTitleTextPane(commentAuthorName).apply {
             putClientProperty(UIUtil.HIDE_EDITOR_FROM_DATA_CONTEXT_PROPERTY, true)
         }
 
-        val bodyPane = JLabel(commentBody)
+        val bodyPane =
+            JBLabel("<html>${coReviewService.textFromSuggestion(suggestionInformation.suggestion)}</html>").apply {
+                setAllowAutoWrapping(true)
+            }
 
         val pendingLabel =
             CollaborationToolsUIUtil.createTagLabel(CollaborationToolsBundle.message("review.thread.pending.tag"))
@@ -44,9 +49,9 @@ object ReviewCommentComponent {
                 }
 
         val deleteButton = CodeReviewCommentUIUtil.createDeleteCommentIconButton {
-            TODO()
+            coReviewService.removeSuggestion(suggestionInformation)
         }.apply {
-            isVisible = false
+            isVisible = true
         }
 
         val actionsPanel = HorizontalListPanel(CodeReviewCommentUIUtil.Actions.HORIZONTAL_GAP).apply {
@@ -68,7 +73,7 @@ object ReviewCommentComponent {
         ) {
             iconTooltip = commentAuthorName
             withHeader(title, actionsPanel)
-            this.maxContentWidth = null
+            this.maxContentWidth = CodeReviewChatItemUIUtil.TEXT_CONTENT_WIDTH
         }
     }
 

@@ -1,11 +1,11 @@
 package de.speedboat.plugins.coreview.editor
 
+import com.intellij.collaboration.ui.codereview.CodeReviewChatItemUIUtil
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.editor.ex.EditorEx
 import com.intellij.openapi.editor.ex.util.EditorUtil
 import com.intellij.openapi.editor.impl.EditorEmbeddedComponentManager
 import com.intellij.openapi.editor.impl.EditorImpl
-import com.intellij.openapi.editor.impl.view.FontLayoutService
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.util.Key
 import com.intellij.ui.components.JBScrollPane
@@ -13,13 +13,11 @@ import com.intellij.util.concurrency.annotations.RequiresEdt
 import com.intellij.util.ui.JBUI
 import de.speedboat.plugins.coreview.services.CoReviewService
 import java.awt.Dimension
-import java.awt.Font
 import java.awt.event.ComponentAdapter
 import java.awt.event.ComponentEvent
 import java.util.concurrent.ConcurrentHashMap
 import javax.swing.JComponent
 import javax.swing.ScrollPaneConstants
-import kotlin.math.ceil
 import kotlin.math.max
 import kotlin.math.min
 
@@ -106,15 +104,9 @@ class SuggestionInlaysManager(val editor: EditorImpl) : Disposable {
 
         var editorTextWidth: Int = 0
 
-        private val maximumEditorTextWidth: Int
         private val verticalScrollbarFlipped: Boolean
 
         init {
-            val metrics = editor.getFontMetrics(Font.PLAIN)
-            val spaceWidth = FontLayoutService.getInstance().charWidth2D(metrics, ' '.toInt())
-            // -4 to create some space
-            maximumEditorTextWidth = ceil(spaceWidth * (editor.settings.getRightMargin(editor.project)) - 4).toInt()
-
             val scrollbarFlip = editor.scrollPane.getClientProperty(JBScrollPane.Flip::class.java)
             verticalScrollbarFlipped =
                 scrollbarFlip == JBScrollPane.Flip.HORIZONTAL || scrollbarFlip == JBScrollPane.Flip.BOTH
@@ -138,7 +130,7 @@ class SuggestionInlaysManager(val editor: EditorImpl) : Disposable {
         private fun calcWidth(): Int {
             val visibleEditorTextWidth =
                 editor.scrollPane.viewport.width - getVerticalScrollbarWidth() - getGutterTextGap()
-            return min(max(visibleEditorTextWidth, 0), maximumEditorTextWidth)
+            return min(max(visibleEditorTextWidth, 0), CodeReviewChatItemUIUtil.TEXT_CONTENT_WIDTH + 52)
         }
 
         private fun getVerticalScrollbarWidth(): Int {

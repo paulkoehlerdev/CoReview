@@ -1,10 +1,12 @@
 package de.speedboat.plugins.coreview.listeners
 
 import com.intellij.codeInsight.daemon.impl.EditorTrackerListener
+import com.intellij.openapi.application.invokeLater
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.impl.EditorImpl
+import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
 import de.speedboat.plugins.coreview.actions.SuggestionInlayComponentsFactory
 import de.speedboat.plugins.coreview.editor.SuggestionInlaysManager
@@ -15,22 +17,36 @@ class EditorTrackerListenerImpl(val project: Project) : EditorTrackerListener {
         val coReviewService = project.service<CoReviewService>()
 
         activeEditors.forEach { editor ->
+            updateEditor(coReviewService, editor)
+        }
+    }
+
+    companion object {
+        fun updateEditor(coReviewService: CoReviewService, editor: Editor) {
             val manager = SuggestionInlaysManager.from(editor as EditorImpl)
             val file = editor.virtualFile
             if (file == null) {
                 thisLogger().warn("editor changed for non-file editor; disposing suggestions")
                 manager.clear()
-                return@forEach
+                return
             }
             thisLogger().warn("editor changed for file ${file.name} (managed inlays: ${manager.managedInlays()}); updating suggestions")
             manager.clear()
 
             coReviewService.getSuggestionsFromFile(file.path).forEach {
                 manager.insertAfter(
-                        it.suggestion.lineEnd, SuggestionInlayComponentsFactory.createSuggestionInlayComponent(
-                        body = coReviewService.textFromSuggestion(it.suggestion),
-                ), it
+                    it.suggestion.lineEnd, SuggestionInlayComponentsFactory.createSuggestionInlayComponent(
+                        coReviewService,
+                        it,
+                    ), it
                 )
+            }
+        }
+
+        fun updateCurrentActiveEditor(project: Project, coReviewService: CoReviewService) {
+            invokeLater {
+                val editor = FileEditorManager.getInstance(project).selectedTextEditor ?: return@invokeLater
+                updateEditor(coReviewService, editor)
             }
         }
     }

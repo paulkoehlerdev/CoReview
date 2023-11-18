@@ -14,6 +14,7 @@ import com.intellij.openapi.vcs.changes.Change
 import com.intellij.openapi.vcs.changes.ChangeListManager
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.wm.ToolWindowManager
+import de.speedboat.plugins.coreview.listeners.EditorTrackerListenerImpl
 import kotlinx.coroutines.CoroutineScope
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Future
@@ -30,6 +31,8 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
     fun triggerCoReview() {
         val changeListManager = ChangeListManager.getInstance(project)
         triggerCoReview(changeListManager.allChanges.toList())
+
+        EditorTrackerListenerImpl.updateCurrentActiveEditor(project, this)
     }
 
     fun triggerCoReview(changelist: List<Change>): Future<List<SuggestionInformation>> {
@@ -70,7 +73,7 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
 
     private fun clearSuggestions() {
         suggestionList = ArrayList()
-        // closeAllSuggestions()
+        EditorTrackerListenerImpl.updateCurrentActiveEditor(project, this)
     }
 
     private fun mapSuggestion(suggestion: OpenAIService.Suggestion): SuggestionInformation {
@@ -91,6 +94,15 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
         return suggestionList.filter { it.file?.path == filePath }
     }
 
+    fun removeSuggestion(suggestion: SuggestionInformation) {
+        val removed = suggestionList.remove(suggestion)
+        if (!removed) {
+            thisLogger().warn("could not remove ${suggestion} from ${suggestionList.toArray()}")
+        }
+
+        EditorTrackerListenerImpl.updateCurrentActiveEditor(project, this)
+    }
+
     private fun createSuggestionInlay(suggestionInformation: SuggestionInformation) {
         invokeLater {
             thisLogger().warn("opening file ${suggestionInformation.file}")
@@ -101,13 +113,6 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
 
     fun textFromSuggestion(suggestion: OpenAIService.Suggestion): String {
         return "${suggestion.title}. \n${suggestion.comment}\n ${suggestion.suggestion}"
-    }
-
-    private fun closeAllSuggestions() {
-//        FileEditorManager.getInstance(project).allEditors.forEach {
-//            val manager = SuggestionInlaysManager.from(it)
-//            manager.dispose()
-//        }
     }
 
     class SuggestionInformation(val suggestion: OpenAIService.Suggestion, val file: VirtualFile?)
