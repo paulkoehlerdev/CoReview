@@ -5,11 +5,11 @@ import com.intellij.icons.AllIcons
 import javax.swing.JComponent
 
 object SuggestionInlayComponentsFactory {
-    fun createSuggestionInlayComponent(): JComponent {
+    fun createSuggestionInlayComponent(body: String = "This is the comment body"): JComponent {
         val commentComponent = ReviewCommentComponent.create(
             "CoReview (GPT-powered)",
             AllIcons.General.User,
-            "This is the comment body",
+            body,
         )
 
         return CodeReviewCommentUIUtil.createEditorInlayPanel(commentComponent)

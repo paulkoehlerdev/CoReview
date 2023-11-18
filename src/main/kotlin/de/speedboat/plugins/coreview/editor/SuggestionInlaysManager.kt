@@ -40,6 +40,10 @@ class SuggestionInlaysManager(val editor: EditorImpl) : Disposable {
         EditorUtil.disposeWithEditor(editor, this)
     }
 
+    fun managedInlays(): Int {
+        return managedInlays.size
+    }
+
     @RequiresEdt
     fun insertAfter(lineIndex: Int, component: JComponent): Disposable? {
         if (Disposer.isDisposed(this)) return null

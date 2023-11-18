@@ -34,4 +34,9 @@
             <add-to-group group-id="ChangesViewToolbar" anchor="last"/>
         </action>
     </actions>
+
+    <projectListeners>
+        <listener class="de.speedboat.plugins.coreview.listeners.EditorTrackerListenerImpl"
+                  topic="com.intellij.codeInsight.daemon.impl.EditorTrackerListener"/>
+    </projectListeners>
 </idea-plugin>
