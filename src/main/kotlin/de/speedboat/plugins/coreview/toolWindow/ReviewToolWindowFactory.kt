@@ -27,14 +27,6 @@ class ReviewToolWindowFactory : ToolWindowFactory {
             add(JProgressBar().apply {
                 isIndeterminate = true
             })
-            add(JButton("Show Inlay").apply {
-                addActionListener {
-                    val editor = FileEditorManager.getInstance(project).selectedTextEditor ?: return@addActionListener
-                    val manager = SuggestionInlaysManager.from(editor)
-
-                    manager.insertAfter(0, SuggestionInlayComponentsFactory.createSuggestionInlayComponent("test"))
-                }
-            })
         }
     }
 }
