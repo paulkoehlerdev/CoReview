@@ -11,27 +11,33 @@ import com.intellij.util.containers.ContainerUtil
 import com.intellij.vcsUtil.VcsUtil
 import java.io.StringWriter
 import java.nio.file.Path
+import java.util.stream.Collectors
 
 
 @Service(Service.Level.PROJECT)
 
 class DiffService(val project: Project) {
 
-    fun buildDiff(changes: List<Change>): List<Pair<Change, String>> {
-        val out = mutableListOf<Pair<Change, String>>()
+    fun buildDiff(changes: List<Change>): List<String> {
+        val out = mutableListOf<String>()
         changes.forEach {
-            val stringWriter = StringWriter()
-            addDiffsToWriter(stringWriter, it)
-            out.add(Pair(it, stringWriter.toString()))
+            val diff = getDiffsForChange(it)
+            out.add(diff)
         }
         return out
     }
 
-    private fun addDiffsToWriter(writer: StringWriter, change: Change) {
+    fun groupDiffs(diffs: List<String>): String {
+        return diffs.stream()
+                .collect(Collectors.joining("\n"));
+    }
+
+    private fun getDiffsForChange(change: Change): String {
         val rootPath = Path.of(VcsUtil.getVcsRootFor(project, change.virtualFile)!!.path)
 
         val changeList = listOf(change)
 
+        val writer = StringWriter()
         val patches =
             IdeaTextPatchBuilder.buildPatch(project, changeList, rootPath, false, false)
         UnifiedDiffWriter.write(project, rootPath, patches, writer, "\n", null, null)
@@ -41,6 +47,14 @@ class DiffService(val project: Project) {
                 BinaryFilePatch::class.java
             ), writer
         )
+
+        // remove IDEA header
+        var split = writer.toString().split("\n").toList()
+        split.indexOf("===================================================================").let {
+            split = split.subList(it + 1, split.size)
+        }
+
+        return split.joinToString("\n")
     }
 
 }

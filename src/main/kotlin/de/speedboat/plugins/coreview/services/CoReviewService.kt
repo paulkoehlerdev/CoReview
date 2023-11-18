@@ -8,10 +8,12 @@ import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vcs.changes.Change
 import com.intellij.openapi.vcs.changes.ChangeListManager
-import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.openapi.wm.ToolWindowManager
 import de.speedboat.plugins.coreview.editor.SuggestionInlaysManager
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
 @Service(Service.Level.PROJECT)
@@ -32,12 +34,17 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
         openCoReviewTab()
 
         coroutineScope.launch {
-            val diff = diffService.buildDiff(changelist)
-            clearSuggestions()
-            diff.forEach {
-                val suggestions = openAIService.getSuggestions(it.second)
-                addSuggestion(suggestions, it.first.virtualFile)
+            val diff = diffService.buildDiff(changelist).apply {
+                diffService.groupDiffs(this)
             }
+            clearSuggestions()
+            diff.map {
+                async {
+                    openAIService.getSuggestions(it)
+                }
+            }.awaitAll().stream()
+                    .flatMap { it.stream() }
+                    .forEach { addSuggestion(it) }
         }
     }
 
@@ -52,13 +59,8 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
         // closeAllSuggestions()
     }
 
-    private fun addSuggestion(suggestions: List<OpenAIService.Suggestion>, file: VirtualFile?) {
-        suggestions.forEach {
-            addSuggestion(it, file)
-        }
-    }
-
-    private fun addSuggestion(suggestion: OpenAIService.Suggestion, file: VirtualFile?) {
+    private fun addSuggestion(suggestion: OpenAIService.Suggestion) {
+        val file = project.projectFile!!.fileSystem.findFileByPath(suggestion.file)
         val suggestionInformation = SuggestionInformation(suggestion, file)
         if (suggestionInformation.file != null) createSuggestionInlay(suggestionInformation)
         suggestionList.add(suggestionInformation)

@@ -7,13 +7,12 @@ import de.speedboat.plugins.coreview.settings.AppSettingsSecrets
 import dev.langchain4j.internal.Json
 import dev.langchain4j.model.chat.ChatLanguageModel
 import dev.langchain4j.model.openai.OpenAiChatModel
-import dev.langchain4j.model.openai.OpenAiModelName.GPT_3_5_TURBO
 import dev.langchain4j.service.AiServices
 import dev.langchain4j.service.SystemMessage
 import dev.langchain4j.service.UserMessage
 
 @Service(Service.Level.PROJECT)
-class OpenAIService() {
+class OpenAIService {
 
     class Suggestion(
             val file: String,
@@ -28,21 +27,20 @@ class OpenAIService() {
     interface CodeReviewer {
         @SystemMessage(
                 """
-You are a senior software developer responsible for reviewing Pull Requests (PRs) submitted by various contributors. Your task is to analyze PRs.
-
+You are a senior software developer responsible for reviewing Pull Requests.
 Generate potential review comments with additional metadata, including lines and files referenced. 
 
 The user will call you with the Git diff as an input.
 
-You must answer strictly in the following JSON format:
+You must answer strictly and only in following JSON (without any additional text or formatting):
 [{
-  "file": (The file path of the code file),
-  "lineStart": (The line number of the start of the referenced code snippet),
-  "lineEnd": (The line number of the end of the referenced code snippet),
-  "severity": (The severity of the issue, ranging from 0 (not severe) to 1 (very severe)),
-  "title": (A concise title for the issue),
+  "file": (File path of the code file),
+  "lineStart": (Line number of the start of the original code snippet),
+  "lineEnd": (Line number of the end of the original code snippet),
+  "severity": (Severity of the issue, ranging from 0 (not severe) to 1 (very severe)),
+  "title": (Concise title for the issue),
   "comment": (In-depth feedback),
-  "suggestion": (Code rewrite suggestions when applicable)
+  "suggestion": (Code rewrite suggestions, if applicable)
 }, ...]
         """
         )
@@ -57,7 +55,7 @@ You must answer strictly in the following JSON format:
 
         chatLanguageModel = OpenAiChatModel.builder()
                 .apiKey(openAiApiKey)
-                .modelName(GPT_3_5_TURBO)
+                .modelName("gpt-3.5-turbo-1106")
                 .build()
 
         codeReviewer = AiServices.create(CodeReviewer::class.java, chatLanguageModel)
@@ -65,9 +63,12 @@ You must answer strictly in the following JSON format:
 
     fun getSuggestions(diff: String): List<Suggestion> {
         return try {
+            thisLogger().warn("Calling OpenAI")
             val suggestions = codeReviewer.getSuggestions(diff)
-            Json.fromJson(suggestions, Array<Suggestion>::class.java).toList()
+            thisLogger().warn("OpenAI response received")
 
+            return Json.fromJson(suggestions, Array<Suggestion>::class.java)
+                    .toList()
         } catch (e: Exception) {
             thisLogger().error(e)
             emptyList();
