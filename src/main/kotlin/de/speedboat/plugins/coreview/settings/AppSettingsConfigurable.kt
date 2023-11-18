@@ -1,6 +1,5 @@
 package de.speedboat.plugins.coreview.settings
 
-import com.intellij.ide.impl.ProjectUtil
 import com.intellij.openapi.components.service
 import com.intellij.openapi.options.Configurable
 import de.speedboat.plugins.coreview.services.OpenAIService
@@ -26,6 +25,7 @@ internal class AppSettingsConfigurable : Configurable {
 
     override fun isModified(): Boolean {
         return settingsComponent!!.openAiApiKey != AppSettingsSecrets.getSecret(AppSecrets.OPEN_AI_API_KEY)
+                || settingsComponent!!.experienceLevel != AppSettingsState.getInstance().experienceLevel
     }
 
     override fun apply() {

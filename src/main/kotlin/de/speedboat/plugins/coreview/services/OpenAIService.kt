@@ -4,30 +4,40 @@ import com.intellij.openapi.components.Service
 import com.intellij.openapi.diagnostic.thisLogger
 import de.speedboat.plugins.coreview.Bundle
 import de.speedboat.plugins.coreview.settings.AppSecrets
+import de.speedboat.plugins.coreview.settings.AppSettingsComponent
 import de.speedboat.plugins.coreview.settings.AppSettingsSecrets
+import de.speedboat.plugins.coreview.settings.AppSettingsState
 import dev.langchain4j.internal.Json
 import dev.langchain4j.model.openai.OpenAiChatModel
 import dev.langchain4j.service.AiServices
 import dev.langchain4j.service.SystemMessage
 import dev.langchain4j.service.UserMessage
+import dev.langchain4j.service.V
 
 @Service(Service.Level.APP)
 class OpenAIService {
 
     class Suggestion(
-        val file: String,
-        val lineStart: Int,
-        val lineEnd: Int,
-        val severity: Float,
-        val title: String,
-        val comment: String,
-        val suggestion: String,
+            val file: String,
+            val lineStart: Int,
+            val lineEnd: Int,
+            val severity: Float,
+            val title: String,
+            val comment: String,
+            val suggestion: String,
     )
+
+    enum class DeveloperExperience(val value: String) {
+        BEGINNER("Beginner"),
+        INTERMEDIATE("Intermediate"),
+        ADVANCED("Advanced")
+    }
 
     interface CodeReviewer {
         @SystemMessage(
-            """
-You are a senior software developer responsible for reviewing Pull Requests. Generate potential review comments with additional metadata, including lines and files referenced.
+                """
+You are a senior software developer responsible for reviewing Pull Requests from a {{experienceLevel}}.
+ Generate potential review comments with additional metadata, including lines and files referenced.
 
 The user will provide you with the Git diff as input. Follow the Git diff conventions properly with the given notation:
 "@@ -26,7 +28,9 @@" is in the format "@@ from-file-range to-file-range @@" while to-file-range is in the following format: "+<start line>,<number of lines>".
@@ -44,7 +54,7 @@ Respond strictly and only in the following JSON format:
 }, ...]
         """
         )
-        fun getSuggestions(@UserMessage diff: String): String
+        fun getSuggestions(@V("experienceLevel") experienceLevel: String, @UserMessage diff: String): String
     }
 
     private var codeReviewer: CodeReviewer? = null
@@ -58,9 +68,9 @@ Respond strictly and only in the following JSON format:
 
         try {
             val chatLanguageModel = OpenAiChatModel.builder()
-                .apiKey(openAiApiKey)
-                .modelName("gpt-3.5-turbo-1106")
-                .build()
+                    .apiKey(openAiApiKey)
+                    .modelName("gpt-3.5-turbo-1106")
+                    .build()
 
             codeReviewer = AiServices.create(CodeReviewer::class.java, chatLanguageModel)
         } catch (e: Exception) {
@@ -70,9 +80,7 @@ Respond strictly and only in the following JSON format:
     }
 
     fun getSuggestions(diff: String): List<Suggestion> {
-
-        val openAiApiKey = AppSettingsSecrets.getSecret(AppSecrets.OPEN_AI_API_KEY)
-        thisLogger().warn("OpenAI API Key: $openAiApiKey")
+        val experienceLevel = AppSettingsState.getInstance().experienceLevel
 
         if (codeReviewer == null) {
             CoReviewNotifier.notifyError(null, Bundle.message("coreview.openaiservice.apikeyerror"))
@@ -80,13 +88,13 @@ Respond strictly and only in the following JSON format:
         }
 
         return try {
-            thisLogger().warn("Calling OpenAI with $diff")
-            val suggestions = codeReviewer!!.getSuggestions(diff)
+            thisLogger().warn("Calling OpenAI for $experienceLevel with $diff")
+            val suggestions = codeReviewer!!.getSuggestions(experienceLevel.value, diff)
             thisLogger().warn("OpenAI response received: $suggestions")
 
             return try {
                 val extractedJsonString =
-                    suggestions.substring(suggestions.indexOf('['), suggestions.lastIndexOf(']') + 1)
+                        suggestions.substring(suggestions.indexOf('['), suggestions.lastIndexOf(']') + 1)
                 Json.fromJson(extractedJsonString, Array<Suggestion>::class.java).toList()
             } catch (e: Exception) {
                 thisLogger().warn(e)
