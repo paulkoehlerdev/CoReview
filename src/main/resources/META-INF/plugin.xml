@@ -25,7 +25,13 @@
                 displayName="CoReview"/>
     </extensions>
 
-    <applicationListeners>
-        <listener class="de.speedboat.plugins.coreview.listeners.MyApplicationActivationListener" topic="com.intellij.openapi.application.ApplicationActivationListener"/>
-    </applicationListeners>
+    <actions>
+        <action id="CoReviewTrigger"
+                class="de.speedboat.plugins.coreview.actions.CoReviewTriggerAction"
+                text="Trigger CoReview"
+                description="Trigger a CoReview"
+                icon="/META-INF/pluginIcon.svg">
+            <add-to-group group-id="ChangesViewToolbar" anchor="last"/>
+        </action>
+    </actions>
 </idea-plugin>
