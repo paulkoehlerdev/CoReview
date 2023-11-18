@@ -7,7 +7,6 @@ import dev.langchain4j.internal.Json
 import dev.langchain4j.model.chat.ChatLanguageModel
 import dev.langchain4j.model.openai.OpenAiChatModel
 import dev.langchain4j.model.openai.OpenAiModelName.GPT_3_5_TURBO
-import dev.langchain4j.model.openai.OpenAiTokenizer
 import dev.langchain4j.service.AiServices
 import dev.langchain4j.service.SystemMessage
 import dev.langchain4j.service.UserMessage
@@ -28,7 +27,7 @@ class OpenAIService(project: Project) {
     interface CodeReviewer {
         @SystemMessage(
             """
-You are a software developer responsible for reviewing Pull Requests (PRs) submitted by various contributors. Your task is to analyze PRs.
+You are a senior software developer responsible for reviewing Pull Requests (PRs) submitted by various contributors. Your task is to analyze PRs.
 
 Generate potential review comments with additional metadata, including lines and files referenced. 
 
@@ -57,9 +56,6 @@ You must answer strictly in the following JSON format:
         chatLanguageModel = OpenAiChatModel.builder()
             .apiKey(settings.openAPIKey)
             .modelName(GPT_3_5_TURBO)
-            .tokenizer(OpenAiTokenizer(GPT_3_5_TURBO))
-            .logRequests(true)
-            .logResponses(true)
             .build()
         codeReviewer = AiServices.create(CodeReviewer::class.java, chatLanguageModel)
     }
