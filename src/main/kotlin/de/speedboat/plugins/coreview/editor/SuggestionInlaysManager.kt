@@ -1,7 +1,6 @@
 package de.speedboat.plugins.coreview.editor
 
 import com.intellij.openapi.Disposable
-import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.ex.EditorEx
 import com.intellij.openapi.editor.ex.util.EditorUtil
 import com.intellij.openapi.editor.impl.EditorEmbeddedComponentManager
@@ -9,6 +8,7 @@ import com.intellij.openapi.editor.impl.EditorImpl
 import com.intellij.openapi.editor.impl.view.FontLayoutService
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.util.Key
+import com.intellij.openapi.util.UserDataHolder
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.util.concurrency.annotations.RequiresEdt
 import com.intellij.util.ui.JBUI
@@ -150,7 +150,7 @@ class SuggestionInlaysManager(val editor: EditorImpl) : Disposable {
     companion object {
         val INLAYS_KEY: Key<SuggestionInlaysManager> = Key.create("SuggestionInlaysManager")
 
-        fun from(editor: Editor): SuggestionInlaysManager {
+        fun from(editor: UserDataHolder): SuggestionInlaysManager {
             return synchronized(editor) {
                 val manager = editor.getUserData(INLAYS_KEY)
                 if (manager == null) {

@@ -1,13 +1,14 @@
-package de.speedboat.plugins.coreview.actions;
+package de.speedboat.plugins.coreview.actions
 
 import com.intellij.collaboration.ui.codereview.comment.CodeReviewCommentUIUtil
 import com.intellij.icons.AllIcons
+import de.speedboat.plugins.coreview.Bundle
 import javax.swing.JComponent
 
 object SuggestionInlayComponentsFactory {
     fun createSuggestionInlayComponent(body: String = "This is the comment body"): JComponent {
         val commentComponent = ReviewCommentComponent.create(
-            "CoReview (GPT-powered)",
+            Bundle.message("coreview.chatbox.label"),
             AllIcons.General.User,
             body,
         )

@@ -32,7 +32,7 @@ class ReviewToolWindowFactory : ToolWindowFactory {
                     val editor = FileEditorManager.getInstance(project).selectedTextEditor ?: return@addActionListener
                     val manager = SuggestionInlaysManager.from(editor)
 
-                    manager.insertAfter(0, SuggestionInlayComponentsFactory.createSuggestionInlayComponent())
+                    manager.insertAfter(0, SuggestionInlayComponentsFactory.createSuggestionInlayComponent("test"))
                 }
             })
         }

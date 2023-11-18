@@ -8,7 +8,6 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.vcs.changes.Change
 import com.intellij.openapi.vcs.changes.patch.BinaryPatchWriter
 import com.intellij.util.containers.ContainerUtil
-import com.intellij.util.diff.Diff
 import com.intellij.vcsUtil.VcsUtil
 import java.io.StringWriter
 import java.nio.file.Path
@@ -18,12 +17,14 @@ import java.nio.file.Path
 
 class DiffService(val project: Project) {
 
-    fun buildDiff(changes: List<Change>): String {
-        val stringWriter = StringWriter()
+    fun buildDiff(changes: List<Change>): List<Pair<Change, String>> {
+        val out = mutableListOf<Pair<Change, String>>()
         changes.forEach {
+            val stringWriter = StringWriter()
             addDiffsToWriter(stringWriter, it)
+            out.add(Pair(it, stringWriter.toString()))
         }
-        return stringWriter.toString()
+        return out
     }
 
     private fun addDiffsToWriter(writer: StringWriter, change: Change) {
