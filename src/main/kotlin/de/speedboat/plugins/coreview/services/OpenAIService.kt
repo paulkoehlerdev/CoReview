@@ -15,18 +15,18 @@ import dev.langchain4j.service.UserMessage
 class OpenAIService {
 
     class Suggestion(
-            val file: String,
-            val lineStart: Int,
-            val lineEnd: Int,
-            val severity: Float,
-            val title: String,
-            val comment: String,
-            val suggestion: String,
+        val file: String,
+        val lineStart: Int,
+        val lineEnd: Int,
+        val severity: Float,
+        val title: String,
+        val comment: String,
+        val suggestion: String,
     )
 
     interface CodeReviewer {
         @SystemMessage(
-                """
+            """
 You are a senior software developer responsible for reviewing Pull Requests.
 Generate potential review comments with additional metadata, including lines and files referenced. 
 
@@ -58,9 +58,9 @@ You must answer strictly and only in following JSON:
 
         try {
             val chatLanguageModel = OpenAiChatModel.builder()
-                    .apiKey(openAiApiKey)
-                    .modelName("gpt-3.5-turbo-1106")
-                    .build()
+                .apiKey(openAiApiKey)
+                .modelName("gpt-3.5-turbo-1106")
+                .build()
 
             codeReviewer = AiServices.create(CodeReviewer::class.java, chatLanguageModel)
         } catch (e: Exception) {
@@ -80,12 +80,13 @@ You must answer strictly and only in following JSON:
         }
 
         return try {
-            thisLogger().warn("Calling OpenAI")
-            val jsonString = codeReviewer!!.getSuggestions(diff)
-            thisLogger().warn("OpenAI response received")
+            thisLogger().warn("Calling OpenAI with $diff")
+            val suggestions = codeReviewer!!.getSuggestions(diff)
+            thisLogger().warn("OpenAI response received: $suggestions")
 
             return try {
-                val extractedJsonString = jsonString.substring(jsonString.indexOf('['), jsonString.lastIndexOf(']') + 1)
+                val extractedJsonString =
+                    suggestions.substring(suggestions.indexOf('['), suggestions.lastIndexOf(']') + 1)
                 Json.fromJson(extractedJsonString, Array<Suggestion>::class.java).toList()
             } catch (e: Exception) {
                 thisLogger().warn(e)
