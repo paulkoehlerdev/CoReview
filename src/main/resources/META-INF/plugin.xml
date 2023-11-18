@@ -14,6 +14,13 @@
                 factoryClass="de.speedboat.plugins.coreview.toolWindow.ReviewToolWindowFactory"
                 id="CoReview"
         />
+        <applicationService
+                serviceImplementation="de.speedboat.plugins.coreview.settings.AppSettingsState"/>
+        <applicationConfigurable
+                parentId="tools"
+                instance="de.speedboat.plugins.coreview.settings.AppSettingsConfigurable"
+                id="de.speedboat.plugins.coreview.settings.AppSettingsConfigurable"
+                displayName="CoReview"/>
     </extensions>
 
     <applicationListeners>
