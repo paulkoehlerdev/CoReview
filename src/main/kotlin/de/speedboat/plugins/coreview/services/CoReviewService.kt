@@ -16,6 +16,7 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.wm.ToolWindowManager
 import de.speedboat.plugins.coreview.listeners.EditorTrackerListenerImpl
 import kotlinx.coroutines.CoroutineScope
+import java.nio.file.Files
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Future
 
@@ -49,9 +50,9 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
                 clearSuggestions()
 
                 val suggestions = diff.parallelStream().flatMap { openAIService.getSuggestions(it).stream() }
-                        .map { mapSuggestion(it) }
-                        .filter { it.file != null && it.file.isValid }
-                        .toList()
+                    .map { mapSuggestion(it) }
+                    .filter { it.file != null && it.file.isValid }
+                    .toList()
 
                 suggestions.forEach { addSuggestion(it) }
                 future.complete(suggestions)
@@ -77,7 +78,49 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
     }
 
     private fun mapSuggestion(suggestion: OpenAIService.Suggestion): SuggestionInformation {
-        val file = project.projectFile!!.fileSystem.findFileByPath(project.guessProjectDir()!!.toNioPath().resolve(suggestion.file).toString())
+        val file = project.projectFile!!.fileSystem.findFileByPath(
+            project.guessProjectDir()!!.toNioPath().resolve(suggestion.file).toString()
+        )
+
+        if (file != null && !file.fileType.isBinary) {
+            val lines = Files.readAllLines(file.toNioPath())
+
+            val maxContext = 20
+            val lineStart = suggestion.lineStart
+            val lineContent = suggestion.lineContent.trim()
+            var offset = 0
+            for (i in 0..maxContext) {
+                if (lines.getOrNull(lineStart + i - 1)?.trim() == lineContent) {
+                    offset = i
+                    break
+                }
+
+                if (lines.getOrNull(lineStart - i - 1)?.trim() == lineContent) {
+                    offset = -i
+                    break
+                }
+            }
+
+            suggestion.lineStart += offset
+            suggestion.lineEnd += offset
+            suggestion.title = suggestion.comment.replace(Regex("line ([0-9]+)")) {
+                "line ${it.groupValues[1].toInt() + offset}"
+            }
+            suggestion.comment = suggestion.comment.replace(Regex("line ([0-9]+)")) {
+                "line ${it.groupValues[1].toInt() + offset}"
+            }
+            suggestion.suggestion = suggestion.suggestion.replace(Regex("line ([0-9]+)")) {
+                "line ${it.groupValues[1].toInt() + offset}"
+            }
+
+            suggestion.lineStart = maxOf(suggestion.lineStart, 1)
+            suggestion.lineStart = minOf(suggestion.lineStart, lines.size)
+            suggestion.lineEnd = maxOf(suggestion.lineEnd, 1)
+            suggestion.lineEnd = minOf(suggestion.lineEnd, lines.size)
+            thisLogger().warn("lines ${suggestion.lineStart}-${suggestion.lineEnd} for '$lineContent' (offset: $offset)")
+        }
+
+
         return SuggestionInformation(suggestion, file)
     }
 
