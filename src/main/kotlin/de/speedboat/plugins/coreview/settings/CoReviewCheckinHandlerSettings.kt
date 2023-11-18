@@ -1,4 +1,4 @@
-package de.speedboat.plugins.coreview.services
+package de.speedboat.plugins.coreview.settings
 
 import com.intellij.openapi.components.*
 
