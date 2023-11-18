@@ -1,6 +1,7 @@
 package de.speedboat.plugins.coreview.actions
 
 import com.intellij.openapi.components.service
+import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vcs.CheckinProjectPanel
 import com.intellij.openapi.vcs.changes.CommitContext
@@ -9,6 +10,7 @@ import com.intellij.openapi.vcs.checkin.*
 import com.intellij.openapi.vcs.ui.RefreshableOnComponent
 import de.speedboat.plugins.coreview.Bundle
 import de.speedboat.plugins.coreview.services.DiffService
+import de.speedboat.plugins.coreview.services.OpenAIService
 import de.speedboat.plugins.coreview.settings.CoReviewCheckinHandlerSettings
 
 
@@ -22,6 +24,7 @@ private class CoReviewCheckinHandler(val project: Project) : CheckinHandler(), C
 
     private val settingsService = project.service<CoReviewCheckinHandlerSettings>()
     private val diffService = project.service<DiffService>()
+    private val openaiService = project.service<OpenAIService>()
     override fun beforeCheckin(): ReturnResult {
         return super.beforeCheckin()
     }
@@ -43,7 +46,8 @@ private class CoReviewCheckinHandler(val project: Project) : CheckinHandler(), C
     }
 
     override suspend fun runCheck(commitInfo: CommitInfo): CommitProblem? {
-        diffService.buildDiff(commitInfo.committedChanges)
+        val diff = diffService.buildDiff(commitInfo.committedChanges)
+        val suggestions = openaiService.getSuggestions(diff)
         return null
     }
 }

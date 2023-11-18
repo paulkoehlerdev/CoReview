@@ -1,29 +1,45 @@
 package de.speedboat.plugins.coreview.services
 
 import com.intellij.openapi.components.Service
-import com.intellij.openapi.diagnostic.thisLogger
+import com.intellij.openapi.diff.impl.patch.BinaryFilePatch
+import com.intellij.openapi.diff.impl.patch.IdeaTextPatchBuilder
+import com.intellij.openapi.diff.impl.patch.UnifiedDiffWriter
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vcs.changes.Change
+import com.intellij.openapi.vcs.changes.patch.BinaryPatchWriter
+import com.intellij.util.containers.ContainerUtil
+import com.intellij.util.diff.Diff
+import com.intellij.vcsUtil.VcsUtil
+import java.io.StringWriter
+import java.nio.file.Path
 
 
 @Service(Service.Level.PROJECT)
 
-class DiffService(project: Project) {
+class DiffService(val project: Project) {
 
-    fun buildDiff(changes: List<Change>): Array<String> {
-        var out: Array<String> = Array(changes.size) { "" }
-        changes.forEachIndexed { index, it ->
-            out[index] = buildDiffFromChange(it)
-            thisLogger().warn(out[index])
+    fun buildDiff(changes: List<Change>): String {
+        val stringWriter = StringWriter()
+        changes.forEach {
+            addDiffsToWriter(stringWriter, it)
         }
-        return out
+        return stringWriter.toString()
     }
 
-    private fun buildDiffFromChange(change: Change): String {
-        val before = change.beforeRevision?.content ?: ""
-        val after = change.afterRevision?.content ?: ""
+    private fun addDiffsToWriter(writer: StringWriter, change: Change) {
+        val rootPath = Path.of(VcsUtil.getVcsRootFor(project, change.virtualFile)!!.path)
 
-        return ""
+        val changeList = listOf(change)
+
+        val patches =
+            IdeaTextPatchBuilder.buildPatch(project, changeList, rootPath, false, false)
+        UnifiedDiffWriter.write(project, rootPath, patches, writer, "\n", null, null)
+        BinaryPatchWriter.writeBinaries(
+            rootPath, ContainerUtil.findAll(
+                patches,
+                BinaryFilePatch::class.java
+            ), writer
+        )
     }
 
 }

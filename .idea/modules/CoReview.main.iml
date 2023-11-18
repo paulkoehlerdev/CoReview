@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id="CoReview:main" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="GRADLE" external.system.module.group="de.speedboat.plugins" external.system.module.type="sourceSet" external.system.module.version="0.1.0" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet external-system-id="GRADLE" type="kotlin-language" name="Kotlin">
+      <configuration version="5" platform="JVM 17" allPlatforms="JVM [17]" useProjectSettings="false">
+        <compilerSettings />
+        <compilerArguments>
+          <flagArguments>
+            <flagArg name="allowNoSourceFiles" arg="true" />
+            <flagArg name="noReflect" arg="true" />
+            <flagArg name="noStdlib" arg="true" />
+          </flagArguments>
+          <stringArguments>
+            <stringArg name="destination" arg="$MODULE_DIR$/../../build/classes/kotlin/main" />
+            <stringArg name="jvmTarget" arg="17" />
+            <stringArg name="moduleName" arg="CoReview" />
+            <stringArg name="apiVersion" arg="1.6" />
+            <stringArg name="languageVersion" arg="1.9" />
+          </stringArguments>
+          <arrayArguments>
+            <arrayArg name="pluginClasspaths">
+              <args>
+                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-jvm/1.9.10/de62c537edfe46edc9987d6bad393550690da01c/kotlin-scripting-jvm-1.9.10.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-common/1.9.10/83fd6c933c3fc24672350b0950311b7eaa3e33fc/kotlin-scripting-common-1.9.10.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.9.10/72812e8a368917ab5c0a5081b56915ffdfec93b7/kotlin-stdlib-1.9.10.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.9.10/dafaf2c27f27c09220cee312df10917d9a5d97ce/kotlin-stdlib-common-1.9.10.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-script-runtime/1.9.10/398513a8534701579cccaf5953ea914416b4696c/kotlin-script-runtime-1.9.10.jar</arg>
+              </args>
+            </arrayArg>
+            <arrayArg name="pluginOptions" />
+          </arrayArguments>
+        </compilerArguments>
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager">
+    <output url="file://$MODULE_DIR$/../../build/classes/kotlin/main" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../src/main">
+      <sourceFolder url="file://$MODULE_DIR$/../../src/main/kotlin" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/main/resources" type="java-resource" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Gradle: dev.langchain4j:langchain4j:0.24.0" level="project" />
+    <orderEntry type="library" name="Gradle: dev.langchain4j:langchain4j-open-ai:0.24.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.jetbrains:annotations:24.0.1" level="project" />
+    <orderEntry type="module-library" scope="PROVIDED">
+      <library name="Gradle: com.jetbrains:ideaIC:2023.2.5">
+        <ANNOTATIONS>
+          <root url="jar://$MAVEN_REPOSITORY$/com/jetbrains/intellij/idea/ideaIU/2023.2.5/ideaIU-2023.2.5-annotations.zip!/" />
+        </ANNOTATIONS>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/lib/ant/lib/ant.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/lib/app.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/lib/app-client.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/lib/bouncy-castle.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/lib/byte-buddy-agent.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/lib/error-prone-annotations.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/lib/external-system-rt.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/lib/externalProcess-rt.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/lib/forms_rt.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/lib/groovy.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/lib/grpc.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/lib/idea_rt.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/lib/intellij-coverage-agent-1.0.723.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/lib/intellij-test-discovery.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/lib/jps-model.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/lib/jsch-agent.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/lib/junit4.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/lib/lib.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/lib/lib-client.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/lib/modules.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/lib/platform-loader.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/lib/product-client.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/lib/protobuf.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/lib/rd.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/lib/stats.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/lib/testFramework.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/lib/util.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/lib/util-8.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/lib/util_rt.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/6fd173ee61048678bd13a9b88367a760ea7a1f14/ideaIC-2023.2.5-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="Gradle: com.squareup.retrofit2:retrofit:2.9.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.okhttp3:okhttp:4.10.0" level="project" />
+    <orderEntry type="library" name="Gradle: dev.langchain4j:langchain4j-core:0.24.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.opennlp:opennlp-tools:1.9.4" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.pdfbox:pdfbox:2.0.29" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.poi:poi-ooxml:5.2.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.poi:poi-scratchpad:5.2.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.poi:poi:5.2.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.jsoup:jsoup:1.16.1" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:s3:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:2.0.7" level="project" />
+    <orderEntry type="library" name="Gradle: dev.ai4j:openai4j:0.10.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.knuddels:jtokkit:0.6.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.6.20" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.10.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.spullara.mustache.java:compiler:0.9.10" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.pdfbox:fontbox:2.0.29" level="project" />
+    <orderEntry type="library" name="Gradle: commons-logging:commons-logging:1.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.commons:commons-collections4:4.4" level="project" />
+    <orderEntry type="library" name="Gradle: commons-io:commons-io:2.11.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.poi:poi-ooxml-lite:5.2.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.xmlbeans:xmlbeans:5.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-api:2.18.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.commons:commons-compress:1.21" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.virtuald:curvesapi:1.07" level="project" />
+    <orderEntry type="library" name="Gradle: commons-codec:commons-codec:1.15" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.commons:commons-math3:3.6.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.zaxxer:SparseBitSet:1.2" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:aws-xml-protocol:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:protocol-core:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:aws-core:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:auth:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:regions:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:sdk-core:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:arns:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:profiles:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:crt-core:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:http-client-spi:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:metrics-spi:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:json-utils:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:utils:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:endpoints-spi:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:annotations:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.retrofit2:converter-gson:2.9.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.okhttp3:okhttp-sse:4.10.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.okio:okio-jvm:3.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.6.20" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:aws-query-protocol:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.eventstream:eventstream:1.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.reactivestreams:reactive-streams:1.0.4" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:third-party-jackson-core:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: software.amazon.awssdk:apache-client:2.20.149" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: software.amazon.awssdk:netty-nio-client:2.20.149" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.apache.httpcomponents:httpclient:4.5.13" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.apache.httpcomponents:httpcore:4.4.13" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty-codec-http:4.1.94.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty-codec:4.1.94.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty-transport-classes-epoll:4.1.94.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty-transport:4.1.94.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty-buffer:4.1.94.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty-resolver:4.1.94.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty-common:4.1.94.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty-transport-native-unix-common:4.1.94.Final" level="project" />
+  </component>
+</module>
