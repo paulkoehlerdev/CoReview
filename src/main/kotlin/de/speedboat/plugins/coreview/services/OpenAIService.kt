@@ -1,8 +1,9 @@
 package de.speedboat.plugins.coreview.services;
 
 import com.intellij.openapi.components.Service
-import com.intellij.openapi.project.Project
-import de.speedboat.plugins.coreview.settings.AppSettingsState
+import com.intellij.openapi.diagnostic.thisLogger
+import de.speedboat.plugins.coreview.settings.AppSecrets
+import de.speedboat.plugins.coreview.settings.AppSettingsSecrets
 import dev.langchain4j.internal.Json
 import dev.langchain4j.model.chat.ChatLanguageModel
 import dev.langchain4j.model.openai.OpenAiChatModel
@@ -12,21 +13,21 @@ import dev.langchain4j.service.SystemMessage
 import dev.langchain4j.service.UserMessage
 
 @Service(Service.Level.PROJECT)
-class OpenAIService(project: Project) {
+class OpenAIService() {
 
     class Suggestion(
-        val file: String,
-        val lineStart: Int,
-        val lineEnd: Int,
-        val severity: Float,
-        val title: String,
-        val comment: String,
-        val suggestion: String,
+            val file: String,
+            val lineStart: Int,
+            val lineEnd: Int,
+            val severity: Float,
+            val title: String,
+            val comment: String,
+            val suggestion: String,
     )
 
     interface CodeReviewer {
         @SystemMessage(
-            """
+                """
 You are a senior software developer responsible for reviewing Pull Requests (PRs) submitted by various contributors. Your task is to analyze PRs.
 
 Generate potential review comments with additional metadata, including lines and files referenced. 
@@ -52,17 +53,24 @@ You must answer strictly in the following JSON format:
     private var codeReviewer: CodeReviewer
 
     init {
-        val settings: AppSettingsState = AppSettingsState.getInstance()
+        val openAiApiKey = AppSettingsSecrets.getSecret(AppSecrets.OPEN_AI_API_KEY)
+
         chatLanguageModel = OpenAiChatModel.builder()
-            .apiKey(settings.openAPIKey)
-            .modelName(GPT_3_5_TURBO)
-            .build()
+                .apiKey(openAiApiKey)
+                .modelName(GPT_3_5_TURBO)
+                .build()
+
         codeReviewer = AiServices.create(CodeReviewer::class.java, chatLanguageModel)
     }
 
     fun getSuggestions(diff: String): List<Suggestion> {
-        val suggestions = codeReviewer.getSuggestions(diff)
-        return Json.fromJson(suggestions, Array<Suggestion>::class.java)
-            .toList()
+        return try {
+            val suggestions = codeReviewer.getSuggestions(diff)
+            Json.fromJson(suggestions, Array<Suggestion>::class.java).toList()
+
+        } catch (e: Exception) {
+            thisLogger().error(e)
+            emptyList();
+        }
     }
 }

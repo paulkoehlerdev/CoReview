@@ -1,5 +1,6 @@
 package de.speedboat.plugins.coreview.settings
 
+import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.options.Configurable
 import org.jetbrains.annotations.Nls
 import javax.swing.JComponent
@@ -22,18 +23,16 @@ internal class AppSettingsConfigurable : Configurable {
     }
 
     override fun isModified(): Boolean {
-        val settings: AppSettingsState = AppSettingsState.getInstance()
-        return settingsComponent!!.openAPIText != settings.openAPIKey
+        return settingsComponent!!.openAiApiKey != AppSettingsSecrets.getSecret(AppSecrets.OPEN_AI_API_KEY)
     }
 
     override fun apply() {
-        val settings: AppSettingsState = AppSettingsState.getInstance()
-        settings.openAPIKey = settingsComponent!!.openAPIText
+        thisLogger().warn(settingsComponent!!.openAiApiKey)
+        AppSettingsSecrets.setSecret(AppSecrets.OPEN_AI_API_KEY, settingsComponent!!.openAiApiKey)
     }
 
     override fun reset() {
-        val settings: AppSettingsState = AppSettingsState.getInstance()
-        settingsComponent!!.openAPIText = settings.openAPIKey
+        settingsComponent!!.openAiApiKey = AppSettingsSecrets.getSecret(AppSecrets.OPEN_AI_API_KEY) ?: ""
     }
 
     override fun disposeUIResources() {

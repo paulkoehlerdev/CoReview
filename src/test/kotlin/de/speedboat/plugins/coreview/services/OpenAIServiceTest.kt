@@ -2,6 +2,8 @@ package de.speedboat.plugins.coreview.services
 
 import com.intellij.openapi.components.service
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import de.speedboat.plugins.coreview.settings.AppSecrets
+import de.speedboat.plugins.coreview.settings.AppSettingsSecrets
 import de.speedboat.plugins.coreview.settings.AppSettingsState
 import junit.framework.TestCase
 
@@ -22,7 +24,7 @@ class OpenAIServiceTest : BasePlatformTestCase() {
     """.trimIndent()
 
     fun testPrompt() {
-        AppSettingsState.getInstance().openAPIKey = System.getenv("OPENAI_API_KEY")
+        AppSettingsSecrets.setSecret(AppSecrets.OPEN_AI_API_KEY, System.getenv("OPENAI_API_KEY"))
         val openAIService = project.service<OpenAIService>()
 
         val suggestions = openAIService.getSuggestions(diff)
