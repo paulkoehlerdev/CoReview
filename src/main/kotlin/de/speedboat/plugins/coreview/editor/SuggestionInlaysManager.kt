@@ -1,4 +1,4 @@
-package inlays
+package de.speedboat.plugins.coreview.editor
 
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.editor.Editor
@@ -48,13 +48,17 @@ class SuggestionInlaysManager(val editor: EditorImpl) : Disposable {
         val offset = editor.document.getLineEndOffset(lineIndex)
 
         return EditorEmbeddedComponentManager.getInstance()
-            .addComponent(editor, wrappedComponent,
-                EditorEmbeddedComponentManager.Properties(EditorEmbeddedComponentManager.ResizePolicy.none(),
+            .addComponent(
+                editor, wrappedComponent,
+                EditorEmbeddedComponentManager.Properties(
+                    EditorEmbeddedComponentManager.ResizePolicy.none(),
                     null,
                     true,
                     false,
                     0,
-                    offset))?.also {
+                    offset
+                )
+            )?.also {
                 managedInlays[wrappedComponent] = it
                 Disposer.register(it, Disposable { managedInlays.remove(wrappedComponent) })
             }
@@ -121,7 +125,8 @@ class SuggestionInlaysManager(val editor: EditorImpl) : Disposable {
         }
 
         private fun calcWidth(): Int {
-            val visibleEditorTextWidth = editor.scrollPane.viewport.width - getVerticalScrollbarWidth() - getGutterTextGap()
+            val visibleEditorTextWidth =
+                editor.scrollPane.viewport.width - getVerticalScrollbarWidth() - getGutterTextGap()
             return min(max(visibleEditorTextWidth, 0), maximumEditorTextWidth)
         }
 
