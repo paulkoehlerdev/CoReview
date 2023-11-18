@@ -32,7 +32,7 @@ Generate potential review comments with additional metadata, including lines and
 
 The user will call you with the Git diff as an input.
 
-You must answer strictly and only in following JSON (without any indicator that it's JSON):
+You must answer strictly and only in following JSON:
 [{
   "file": (File path of the code file),
   "lineStart": (Line number of the start of the original code snippet),
@@ -81,11 +81,12 @@ You must answer strictly and only in following JSON (without any indicator that 
 
         return try {
             thisLogger().warn("Calling OpenAI")
-            val suggestions = codeReviewer!!.getSuggestions(diff)
+            val jsonString = codeReviewer!!.getSuggestions(diff)
             thisLogger().warn("OpenAI response received")
 
             return try {
-                Json.fromJson(suggestions, Array<Suggestion>::class.java).toList()
+                val extractedJsonString = jsonString.substring(jsonString.indexOf('['), jsonString.lastIndexOf(']') + 1)
+                Json.fromJson(extractedJsonString, Array<Suggestion>::class.java).toList()
             } catch (e: Exception) {
                 thisLogger().warn(e)
                 CoReviewNotifier.notifyError(null, Bundle.message("coreview.openaiservice.jsonerror"))
