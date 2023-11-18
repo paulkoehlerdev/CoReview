@@ -14,7 +14,7 @@
             <stringArg name="destination" arg="$MODULE_DIR$/../../build/classes/kotlin/main" />
             <stringArg name="jvmTarget" arg="17" />
             <stringArg name="moduleName" arg="CoReview" />
-            <stringArg name="apiVersion" arg="1.9" />
+            <stringArg name="apiVersion" arg="1.6" />
             <stringArg name="languageVersion" arg="1.9" />
           </stringArguments>
           <arrayArguments>
@@ -43,19 +43,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Gradle: dev.langchain4j:langchain4j:0.24.0" level="project" />
+    <orderEntry type="library" name="Gradle: dev.langchain4j:langchain4j-open-ai:0.24.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.jetbrains:annotations:24.0.1" level="project" />
-    <orderEntry type="module-library" scope="PROVIDED">
-      <library name="Gradle: unzipped.com.jetbrains.plugins:vcs-git:unzipped.com.jetbrains.plugins:ideaIC-IC-232.10227.8-withSources">
-        <CLASSES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/plugins/vcs-git/lib/git4idea-rt.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/plugins/vcs-git/lib/vcs-git.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/6fd173ee61048678bd13a9b88367a760ea7a1f14/ideaIC-2023.2.5-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
     <orderEntry type="module-library" scope="PROVIDED">
       <library name="Gradle: com.jetbrains:ideaIC:2023.2.5">
         <ANNOTATIONS>
@@ -98,5 +88,71 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="library" name="Gradle: com.squareup.retrofit2:retrofit:2.9.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.okhttp3:okhttp:4.10.0" level="project" />
+    <orderEntry type="library" name="Gradle: dev.langchain4j:langchain4j-core:0.24.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.opennlp:opennlp-tools:1.9.4" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.pdfbox:pdfbox:2.0.29" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.poi:poi-ooxml:5.2.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.poi:poi-scratchpad:5.2.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.poi:poi:5.2.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.jsoup:jsoup:1.16.1" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:s3:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:2.0.7" level="project" />
+    <orderEntry type="library" name="Gradle: dev.ai4j:openai4j:0.10.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.knuddels:jtokkit:0.6.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.6.20" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.10.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.spullara.mustache.java:compiler:0.9.10" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.pdfbox:fontbox:2.0.29" level="project" />
+    <orderEntry type="library" name="Gradle: commons-logging:commons-logging:1.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.commons:commons-collections4:4.4" level="project" />
+    <orderEntry type="library" name="Gradle: commons-io:commons-io:2.11.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.poi:poi-ooxml-lite:5.2.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.xmlbeans:xmlbeans:5.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-api:2.18.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.commons:commons-compress:1.21" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.virtuald:curvesapi:1.07" level="project" />
+    <orderEntry type="library" name="Gradle: commons-codec:commons-codec:1.15" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.commons:commons-math3:3.6.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.zaxxer:SparseBitSet:1.2" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:aws-xml-protocol:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:protocol-core:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:aws-core:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:auth:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:regions:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:sdk-core:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:arns:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:profiles:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:crt-core:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:http-client-spi:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:metrics-spi:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:json-utils:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:utils:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:endpoints-spi:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:annotations:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.retrofit2:converter-gson:2.9.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.okhttp3:okhttp-sse:4.10.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.okio:okio-jvm:3.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.6.20" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:aws-query-protocol:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.eventstream:eventstream:1.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.reactivestreams:reactive-streams:1.0.4" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.awssdk:third-party-jackson-core:2.20.149" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: software.amazon.awssdk:apache-client:2.20.149" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: software.amazon.awssdk:netty-nio-client:2.20.149" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.apache.httpcomponents:httpclient:4.5.13" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.apache.httpcomponents:httpcore:4.4.13" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty-codec-http:4.1.94.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty-codec:4.1.94.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty-transport-classes-epoll:4.1.94.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty-transport:4.1.94.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty-buffer:4.1.94.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty-resolver:4.1.94.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty-common:4.1.94.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty-transport-native-unix-common:4.1.94.Final" level="project" />
   </component>
 </module>
