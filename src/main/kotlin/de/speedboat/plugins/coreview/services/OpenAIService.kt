@@ -35,8 +35,8 @@ The user will call you with the Git diff as an input.
 You must answer strictly and only in following JSON:
 [{
   "file": (File path of the code file),
-  "lineStart": (Line number of the start of the original code snippet),
-  "lineEnd": (Line number of the end of the original code snippet),
+  "lineStart": (Line number of the start of the code snippet),
+  "lineEnd": (Line number of the end of the code snippet),
   "severity": (Severity of the issue, ranging from 0 (not severe) to 1 (very severe)),
   "title": (Concise title for the issue),
   "comment": (In-depth feedback),
