@@ -15,6 +15,8 @@ import com.intellij.openapi.vcs.changes.ChangeListManager
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.wm.ToolWindowManager
 import kotlinx.coroutines.CoroutineScope
+import java.util.concurrent.CompletableFuture
+import java.util.concurrent.Future
 
 
 @Service(Service.Level.PROJECT)
@@ -30,9 +32,10 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
         triggerCoReview(changeListManager.allChanges.toList())
     }
 
-    fun triggerCoReview(changelist: List<Change>) {
+    fun triggerCoReview(changelist: List<Change>): Future<List<SuggestionInformation>> {
         thisLogger().warn("Triggering CoReview")
 
+        val future = CompletableFuture<List<SuggestionInformation>>()
         ProgressManager.getInstance().run(object : Task.Backgroundable(project, "Reviewing code...") {
             override fun run(progressIndicator: ProgressIndicator) {
                 progressIndicator.isIndeterminate = true
@@ -42,15 +45,21 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
                 }
                 clearSuggestions()
 
-                diff.parallelStream().flatMap {
-                    openAIService.getSuggestions(it).stream()
-                }.forEach { addSuggestion(it) }
+                val suggestions = diff.parallelStream().flatMap { openAIService.getSuggestions(it).stream() }
+                        .map { mapSuggestion(it) }
+                        .filter { it.file != null && it.file.isValid }
+                        .toList()
+
+                suggestions.forEach { addSuggestion(it) }
+                future.complete(suggestions)
 
                 invokeLater {
                     openCoReviewTab()
                 }
             }
         })
+
+        return future
     }
 
     private fun openCoReviewTab() {
@@ -64,11 +73,14 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
         // closeAllSuggestions()
     }
 
-    private fun addSuggestion(suggestion: OpenAIService.Suggestion) {
+    private fun mapSuggestion(suggestion: OpenAIService.Suggestion): SuggestionInformation {
         val file = project.projectFile!!.fileSystem.findFileByPath(project.guessProjectDir()!!.toNioPath().resolve(suggestion.file).toString())
-        val suggestionInformation = SuggestionInformation(suggestion, file)
-        if (suggestionInformation.file != null) createSuggestionInlay(suggestionInformation)
-        suggestionList.add(suggestionInformation)
+        return SuggestionInformation(suggestion, file)
+    }
+
+    private fun addSuggestion(suggestion: SuggestionInformation) {
+        if (suggestion.file != null) createSuggestionInlay(suggestion)
+        suggestionList.add(suggestion)
     }
 
     fun getSuggestions(): List<SuggestionInformation> {
