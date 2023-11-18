@@ -45,6 +45,18 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.jetbrains:annotations:24.0.1" level="project" />
     <orderEntry type="module-library" scope="PROVIDED">
+      <library name="Gradle: unzipped.com.jetbrains.plugins:vcs-git:unzipped.com.jetbrains.plugins:ideaIC-IC-232.10227.8-withSources">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/plugins/vcs-git/lib/git4idea-rt.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/30e9f22cc3cd8197ba1217cc1aa50a3914a2b873/ideaIC-2023.2.5/plugins/vcs-git/lib/vcs-git.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2023.2.5/6fd173ee61048678bd13a9b88367a760ea7a1f14/ideaIC-2023.2.5-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="PROVIDED">
       <library name="Gradle: com.jetbrains:ideaIC:2023.2.5">
         <ANNOTATIONS>
           <root url="jar://$MAVEN_REPOSITORY$/com/jetbrains/intellij/idea/ideaIU/2023.2.5/ideaIU-2023.2.5-annotations.zip!/" />
