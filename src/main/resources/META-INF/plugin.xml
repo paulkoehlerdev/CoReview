@@ -2,7 +2,7 @@
 <idea-plugin>
     <id>org.speedboat.plugins.coreview</id>
     <name>CoReview</name>
-    <vendor>JetBrains</vendor>
+    <vendor>Speedboat</vendor>
 
     <depends>com.intellij.modules.platform</depends>
 
