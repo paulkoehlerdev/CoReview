@@ -35,8 +35,8 @@ The user will provide you with the Git diff as input. Ensure that the line refer
 You must answer strictly and only in the following JSON format:
 [{
   "file": (File path of the code file),
-  "lineStart": (Start line number in the original file before applying the Git diff),
-  "lineEnd": (End line number in the original file before applying the Git diff),
+  "lineStart": (Start line number in the original file after applying the Git diff),
+  "lineEnd": (End line number in the original file after applying the Git diff),
   "severity": (Severity of the issue, ranging from 0 (not severe) to 1 (very severe)),
   "title": (Concise title for the issue),
   "comment": (In-depth feedback),
