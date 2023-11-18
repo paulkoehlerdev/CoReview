@@ -1,7 +1,6 @@
 package de.speedboat.plugins.coreview.actions
 
 import com.intellij.openapi.components.service
-import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vcs.CheckinProjectPanel
 import com.intellij.openapi.vcs.changes.CommitContext
@@ -9,7 +8,9 @@ import com.intellij.openapi.vcs.changes.ui.BooleanCommitOption
 import com.intellij.openapi.vcs.checkin.*
 import com.intellij.openapi.vcs.ui.RefreshableOnComponent
 import de.speedboat.plugins.coreview.Bundle
-import de.speedboat.plugins.coreview.services.CoReviewCheckinHandlerSettings
+import de.speedboat.plugins.coreview.services.DiffService
+import de.speedboat.plugins.coreview.settings.CoReviewCheckinHandlerSettings
+
 
 class CoReviewCheckinHandlerFactory : CheckinHandlerFactory() {
     override fun createHandler(panel: CheckinProjectPanel, commitContext: CommitContext): CheckinHandler {
@@ -20,6 +21,7 @@ class CoReviewCheckinHandlerFactory : CheckinHandlerFactory() {
 private class CoReviewCheckinHandler(val project: Project) : CheckinHandler(), CommitCheck {
 
     private val settingsService = project.service<CoReviewCheckinHandlerSettings>()
+    private val diffService = project.service<DiffService>()
     override fun beforeCheckin(): ReturnResult {
         return super.beforeCheckin()
     }
@@ -41,7 +43,7 @@ private class CoReviewCheckinHandler(val project: Project) : CheckinHandler(), C
     }
 
     override suspend fun runCheck(commitInfo: CommitInfo): CommitProblem? {
-        thisLogger().warn(commitInfo.commitMessage)
+        diffService.buildDiff(commitInfo.committedChanges)
         return null
     }
 }
