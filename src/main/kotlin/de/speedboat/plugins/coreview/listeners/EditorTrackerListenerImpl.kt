@@ -35,7 +35,7 @@ class EditorTrackerListenerImpl(val project: Project) : EditorTrackerListener {
 
             coReviewService.getSuggestionsFromFile(file.path).forEach {
                 manager.insertAfter(
-                    it.suggestion.lineEnd - 1, SuggestionInlayComponentsFactory.createSuggestionInlayComponent(
+                    it.suggestion.lineNumber - 1, SuggestionInlayComponentsFactory.createSuggestionInlayComponent(
                         coReviewService,
                         it,
                     ), it

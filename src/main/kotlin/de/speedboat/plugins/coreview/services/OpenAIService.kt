@@ -18,8 +18,7 @@ class OpenAIService {
 
     class Suggestion(
         val file: String,
-        var lineStart: Int,
-        var lineEnd: Int,
+        var lineNumber: Int,
         val lineContent: String,
         val severity: Float,
         var title: String,
@@ -48,9 +47,8 @@ Only refer to modified or added lines, not deleted lines. Always use the line nu
 Respond strictly and only in the following JSON format:
 [{
   "file": (File path of the code file),
-  "lineStart": (Start line number in the original file after applying the Git diff),
-  "lineEnd": (End line number in the original file after applying the Git diff),
-  "lineContent": (The contents of the start line you are referring to),
+  "lineNumber": (Line number in the original file after applying the Git diff),
+  "lineContent": (The contents of the line you are referring to),
   "severity": (Severity of the issue, ranging from 0 (not severe) to 1 (very severe)),
   "title": (Concise title for the issue),
   "comment": (In-depth feedback),

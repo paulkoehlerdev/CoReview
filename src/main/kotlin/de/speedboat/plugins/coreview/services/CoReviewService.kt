@@ -86,23 +86,22 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
             val lines = Files.readAllLines(file.toNioPath())
 
             val maxContext = 20
-            val lineStart = suggestion.lineStart
+            val lineNumber = suggestion.lineNumber
             val lineContent = suggestion.lineContent.trim()
             var offset = 0
             for (i in 0..maxContext) {
-                if (lines.getOrNull(lineStart + i - 1)?.trim() == lineContent) {
+                if (lines.getOrNull(lineNumber + i - 1)?.trim() == lineContent) {
                     offset = i
                     break
                 }
 
-                if (lines.getOrNull(lineStart - i - 1)?.trim() == lineContent) {
+                if (lines.getOrNull(lineNumber - i - 1)?.trim() == lineContent) {
                     offset = -i
                     break
                 }
             }
 
-            suggestion.lineStart += offset
-            suggestion.lineEnd += offset
+            suggestion.lineNumber += offset
             suggestion.title = suggestion.comment.replace(Regex("line ([0-9]+)")) {
                 "line ${it.groupValues[1].toInt() + offset}"
             }
@@ -113,11 +112,9 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
                 "line ${it.groupValues[1].toInt() + offset}"
             }
 
-            suggestion.lineStart = maxOf(suggestion.lineStart, 1)
-            suggestion.lineStart = minOf(suggestion.lineStart, lines.size)
-            suggestion.lineEnd = maxOf(suggestion.lineEnd, 1)
-            suggestion.lineEnd = minOf(suggestion.lineEnd, lines.size)
-            thisLogger().warn("lines ${suggestion.lineStart}-${suggestion.lineEnd} for '$lineContent' (offset: $offset)")
+            suggestion.lineNumber = maxOf(suggestion.lineNumber, 1)
+            suggestion.lineNumber = minOf(suggestion.lineNumber, lines.size)
+            thisLogger().warn("line ${suggestion.lineNumber} for '$lineContent' (offset: $offset)")
         }
 
 

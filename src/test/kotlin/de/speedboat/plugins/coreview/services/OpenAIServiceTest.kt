@@ -4,7 +4,6 @@ import com.intellij.openapi.components.service
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import de.speedboat.plugins.coreview.settings.AppSecrets
 import de.speedboat.plugins.coreview.settings.AppSettingsSecrets
-import de.speedboat.plugins.coreview.settings.AppSettingsState
 import junit.framework.TestCase
 
 class OpenAIServiceTest : BasePlatformTestCase() {
@@ -35,8 +34,7 @@ class OpenAIServiceTest : BasePlatformTestCase() {
         TestCase.assertNotNull(suggestion.suggestion)
         TestCase.assertNotNull(suggestion.comment)
         TestCase.assertNotNull(suggestion.title)
-        TestCase.assertNotSame(suggestion.lineStart, 0)
-        TestCase.assertNotSame(suggestion.lineEnd, 0)
+        TestCase.assertNotSame(suggestion.lineNumber, 0)
     }
 
 }
