@@ -11,7 +11,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow
-                icon="/META-INF/pluginIcon.svg"
+                icon="/icon/icon.svg"
                 factoryClass="de.speedboat.plugins.coreview.toolWindow.ReviewToolWindowFactory"
                 id="CoReview"
         />
@@ -30,7 +30,7 @@
                 class="de.speedboat.plugins.coreview.actions.CoReviewTriggerAction"
                 text="Trigger CoReview"
                 description="Trigger a CoReview"
-                icon="/META-INF/pluginIcon.svg">
+                icon="/icon/icon.svg">
             <add-to-group group-id="ChangesViewToolbar" anchor="last"/>
         </action>
     </actions>
