@@ -2,41 +2,37 @@ package de.speedboat.plugins.coreview.services;
 
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.diagnostic.thisLogger
-import com.intellij.openapi.project.Project
 import de.speedboat.plugins.coreview.Bundle
 import de.speedboat.plugins.coreview.settings.AppSecrets
 import de.speedboat.plugins.coreview.settings.AppSettingsSecrets
 import dev.langchain4j.internal.Json
-import dev.langchain4j.model.chat.ChatLanguageModel
 import dev.langchain4j.model.openai.OpenAiChatModel
 import dev.langchain4j.service.AiServices
 import dev.langchain4j.service.SystemMessage
 import dev.langchain4j.service.UserMessage
-import java.lang.IllegalStateException
-import kotlin.reflect.typeOf
 
 @Service(Service.Level.APP)
 class OpenAIService {
 
     class Suggestion(
-        val file: String,
-        val lineStart: Int,
-        val lineEnd: Int,
-        val severity: Float,
-        val title: String,
-        val comment: String,
-        val suggestion: String,
+            val file: String,
+            val lineStart: Int,
+            val lineEnd: Int,
+            val severity: Float,
+            val title: String,
+            val comment: String,
+            val suggestion: String,
     )
 
     interface CodeReviewer {
         @SystemMessage(
-            """
+                """
 You are a senior software developer responsible for reviewing Pull Requests.
 Generate potential review comments with additional metadata, including lines and files referenced. 
 
 The user will call you with the Git diff as an input.
 
-You must answer strictly and only in following JSON (without any additional text or formatting):
+You must answer strictly and only in following JSON (without any indicator that it's JSON):
 [{
   "file": (File path of the code file),
   "lineStart": (Line number of the start of the original code snippet),
@@ -62,9 +58,9 @@ You must answer strictly and only in following JSON (without any additional text
 
         try {
             val chatLanguageModel = OpenAiChatModel.builder()
-                .apiKey(openAiApiKey)
-                .modelName("gpt-3.5-turbo-1106")
-                .build()
+                    .apiKey(openAiApiKey)
+                    .modelName("gpt-3.5-turbo-1106")
+                    .build()
 
             codeReviewer = AiServices.create(CodeReviewer::class.java, chatLanguageModel)
         } catch (e: Exception) {
