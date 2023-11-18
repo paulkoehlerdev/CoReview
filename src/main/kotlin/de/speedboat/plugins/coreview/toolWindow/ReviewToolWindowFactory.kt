@@ -7,7 +7,7 @@ import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBPanel
 import com.intellij.ui.content.ContentFactory
 import de.speedboat.plugins.coreview.actions.SuggestionInlayComponentsFactory
-import inlays.SuggestionInlaysManager
+import de.speedboat.plugins.coreview.editor.SuggestionInlaysManager
 import javax.swing.JButton
 
 class ReviewToolWindowFactory : ToolWindowFactory {
