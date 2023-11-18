@@ -5,6 +5,9 @@ import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.fileEditor.FileEditorManager
+import com.intellij.openapi.progress.ProgressIndicator
+import com.intellij.openapi.progress.ProgressManager
+import com.intellij.openapi.progress.Task
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
 import com.intellij.openapi.vcs.changes.Change
@@ -13,10 +16,7 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.wm.ToolWindowManager
 import de.speedboat.plugins.coreview.editor.SuggestionInlaysManager
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.launch
-import java.nio.file.Path
+
 
 @Service(Service.Level.PROJECT)
 class CoReviewService(private val project: Project, private val coroutineScope: CoroutineScope) {
@@ -33,21 +33,25 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
 
     fun triggerCoReview(changelist: List<Change>) {
         thisLogger().warn("Triggering CoReview")
-        openCoReviewTab()
 
-        coroutineScope.launch {
-            val diff = diffService.buildDiff(changelist).apply {
-                diffService.groupDiffs(this)
-            }
-            clearSuggestions()
-            diff.map {
-                async {
-                    openAIService.getSuggestions(it)
+        ProgressManager.getInstance().run(object : Task.Backgroundable(project, "Reviewing code...") {
+            override fun run(progressIndicator: ProgressIndicator) {
+                progressIndicator.isIndeterminate = true
+
+                val diff = diffService.buildDiff(changelist).apply {
+                    diffService.groupDiffs(this)
                 }
-            }.awaitAll().stream()
-                    .flatMap { it.stream() }
-                    .forEach { addSuggestion(it) }
-        }
+                clearSuggestions()
+
+                diff.parallelStream().flatMap {
+                    openAIService.getSuggestions(it).stream()
+                }.forEach { addSuggestion(it) }
+
+                invokeLater {
+                    openCoReviewTab()
+                }
+            }
+        })
     }
 
     private fun openCoReviewTab() {
