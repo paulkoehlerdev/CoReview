@@ -8,7 +8,6 @@ import com.intellij.openapi.editor.impl.EditorImpl
 import com.intellij.openapi.editor.impl.view.FontLayoutService
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.util.Key
-import com.intellij.openapi.util.UserDataHolder
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.util.concurrency.annotations.RequiresEdt
 import com.intellij.util.ui.JBUI
@@ -16,6 +15,7 @@ import java.awt.Dimension
 import java.awt.Font
 import java.awt.event.ComponentAdapter
 import java.awt.event.ComponentEvent
+import java.util.concurrent.ConcurrentHashMap
 import javax.swing.JComponent
 import javax.swing.ScrollPaneConstants
 import kotlin.math.ceil
@@ -28,7 +28,7 @@ import kotlin.math.min
  */
 class SuggestionInlaysManager(val editor: EditorImpl) : Disposable {
 
-    private val managedInlays = mutableMapOf<ComponentWrapper, Disposable>()
+    private val managedInlays = ConcurrentHashMap<ComponentWrapper, Disposable>()
     private val editorWidthWatcher = EditorTextWidthWatcher()
 
     init {
@@ -91,6 +91,11 @@ class SuggestionInlaysManager(val editor: EditorImpl) : Disposable {
         }
     }
 
+    fun clear() {
+        managedInlays.values.forEach(Disposer::dispose)
+        managedInlays.clear()
+    }
+
     override fun dispose() {
         managedInlays.values.forEach(Disposer::dispose)
     }
@@ -150,11 +155,11 @@ class SuggestionInlaysManager(val editor: EditorImpl) : Disposable {
     companion object {
         val INLAYS_KEY: Key<SuggestionInlaysManager> = Key.create("SuggestionInlaysManager")
 
-        fun from(editor: UserDataHolder): SuggestionInlaysManager {
+        fun from(editor: EditorImpl): SuggestionInlaysManager {
             return synchronized(editor) {
                 val manager = editor.getUserData(INLAYS_KEY)
                 if (manager == null) {
-                    val newManager = SuggestionInlaysManager(editor as EditorImpl)
+                    val newManager = SuggestionInlaysManager(editor)
                     editor.putUserData(INLAYS_KEY, newManager)
                     newManager
                 } else manager

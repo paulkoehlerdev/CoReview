@@ -4,6 +4,7 @@ import com.intellij.codeInsight.daemon.impl.EditorTrackerListener
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.editor.Editor
+import com.intellij.openapi.editor.impl.EditorImpl
 import com.intellij.openapi.project.Project
 import de.speedboat.plugins.coreview.actions.SuggestionInlayComponentsFactory
 import de.speedboat.plugins.coreview.editor.SuggestionInlaysManager
@@ -14,15 +15,15 @@ class EditorTrackerListenerImpl(val project: Project) : EditorTrackerListener {
         val coReviewService = project.service<CoReviewService>()
 
         activeEditors.forEach { editor ->
-            val manager = SuggestionInlaysManager.from(editor)
+            val manager = SuggestionInlaysManager.from(editor as EditorImpl)
             val file = editor.virtualFile
             if (file == null) {
                 thisLogger().warn("editor changed for non-file editor; disposing suggestions")
-                manager.dispose()
+                manager.clear()
                 return@forEach
             }
             thisLogger().warn("editor changed for file ${file.name} (managed inlays: ${manager.managedInlays()}); updating suggestions")
-            manager.dispose()
+            manager.clear()
 
             coReviewService.getSuggestionsFromFile(file.path).forEach {
                 manager.insertAfter(
