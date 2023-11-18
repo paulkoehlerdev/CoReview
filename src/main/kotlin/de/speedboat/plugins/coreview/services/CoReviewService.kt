@@ -14,7 +14,6 @@ import com.intellij.openapi.vcs.changes.Change
 import com.intellij.openapi.vcs.changes.ChangeListManager
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.wm.ToolWindowManager
-import de.speedboat.plugins.coreview.editor.SuggestionInlaysManager
 import kotlinx.coroutines.CoroutineScope
 
 
@@ -89,14 +88,14 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
     }
 
     fun textFromSuggestion(suggestion: OpenAIService.Suggestion): String {
-        return "${suggestion.title}. \n${suggestion.suggestion}"
+        return "${suggestion.title}. \n${suggestion.comment}\n ${suggestion.suggestion}"
     }
 
     private fun closeAllSuggestions() {
-        FileEditorManager.getInstance(project).allEditors.forEach {
-            val manager = SuggestionInlaysManager.from(it)
-            manager.dispose()
-        }
+//        FileEditorManager.getInstance(project).allEditors.forEach {
+//            val manager = SuggestionInlaysManager.from(it)
+//            manager.dispose()
+//        }
     }
 
     class SuggestionInformation(val suggestion: OpenAIService.Suggestion, val file: VirtualFile?)
