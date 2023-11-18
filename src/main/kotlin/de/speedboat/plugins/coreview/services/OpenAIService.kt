@@ -49,7 +49,7 @@ You must answer strictly in the following JSON format:
     }
 
     private var chatLanguageModel: ChatLanguageModel
-    private var codeReviewer: CodeReviewer;
+    private var codeReviewer: CodeReviewer
 
     init {
         val settings: AppSettingsState = AppSettingsState.getInstance()
