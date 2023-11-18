@@ -27,12 +27,12 @@ class OpenAIService {
     interface CodeReviewer {
         @SystemMessage(
             """
-You are a senior software developer responsible for reviewing Pull Requests.
-Generate potential review comments with additional metadata, including lines and files referenced.
+You are a senior software developer responsible for reviewing Pull Requests. Generate potential review comments with additional metadata, including lines and files referenced.
 
-The user will provide you with the Git diff as input. Ensure that the line references incorporate Git diff line offsets correctly.
+The user will provide you with the Git diff as input. Follow the Git diff conventions properly with the given notation:
+"@@ -26,7 +28,9 @@" is in the format "@@ from-file-range to-file-range @@" while to-file-range is in the following format: "+<start line>,<number of lines>".
 
-You must answer strictly and only in the following JSON format:
+Respond strictly and only in the following JSON format:
 [{
   "file": (File path of the code file),
   "lineStart": (Start line number in the original file after applying the Git diff),
