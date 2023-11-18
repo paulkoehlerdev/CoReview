@@ -16,7 +16,7 @@ class SeverityIconRenderer(private val suggestion: CoReviewService.SuggestionInf
         return suggestion.hashCode()
     }
 
-    override fun getTooltipText(): String? {
+    override fun getTooltipText(): String {
         val severity = Severity.getSeverity(suggestion.suggestion.severity)
         return severity.title
     }
