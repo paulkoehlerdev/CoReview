@@ -9,19 +9,24 @@ import com.intellij.ui.content.ContentFactory
 import de.speedboat.plugins.coreview.actions.SuggestionInlayComponentsFactory
 import de.speedboat.plugins.coreview.editor.SuggestionInlaysManager
 import javax.swing.JButton
+import javax.swing.JProgressBar
+
 
 class ReviewToolWindowFactory : ToolWindowFactory {
 
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
-        val myToolWindow = MyToolWindow(project, toolWindow)
-        val content = ContentFactory.getInstance().createContent(myToolWindow.getContent(), null, false)
+        val coReviewToolWindow = CoReviewToolWindow(project)
+        val content = ContentFactory.getInstance().createContent(coReviewToolWindow.getContent(), null, false)
         toolWindow.contentManager.addContent(content)
     }
 
     override fun shouldBeAvailable(project: Project) = true
 
-    class MyToolWindow(private val project: Project, toolWindow: ToolWindow) {
+    class CoReviewToolWindow(private val project: Project) {
         fun getContent() = JBPanel<JBPanel<*>>().apply {
+            add(JProgressBar().apply {
+                isIndeterminate = true
+            })
             add(JButton("Show Inlay").apply {
                 addActionListener {
                     val editor = FileEditorManager.getInstance(project).selectedTextEditor ?: return@addActionListener
