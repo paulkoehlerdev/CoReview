@@ -6,6 +6,7 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.project.guessProjectDir
 import com.intellij.openapi.vcs.changes.Change
 import com.intellij.openapi.vcs.changes.ChangeListManager
 import com.intellij.openapi.vfs.VirtualFile
@@ -15,6 +16,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
+import java.nio.file.Path
 
 @Service(Service.Level.PROJECT)
 class CoReviewService(private val project: Project, private val coroutineScope: CoroutineScope) {
@@ -60,7 +62,7 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
     }
 
     private fun addSuggestion(suggestion: OpenAIService.Suggestion) {
-        val file = project.projectFile!!.fileSystem.findFileByPath(suggestion.file)
+        val file = project.projectFile!!.fileSystem.findFileByPath(project.guessProjectDir()!!.toNioPath().resolve(suggestion.file).toString())
         val suggestionInformation = SuggestionInformation(suggestion, file)
         if (suggestionInformation.file != null) createSuggestionInlay(suggestionInformation)
         suggestionList.add(suggestionInformation)
