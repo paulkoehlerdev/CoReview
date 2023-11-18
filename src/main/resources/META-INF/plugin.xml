@@ -23,6 +23,9 @@
                 instance="de.speedboat.plugins.coreview.settings.AppSettingsConfigurable"
                 id="de.speedboat.plugins.coreview.settings.AppSettingsConfigurable"
                 displayName="CoReview"/>
+        <notificationGroup id="CoReview Notification Group"
+                           displayType="BALLOON"
+                           key="notification.speedboat.coreview"/>
     </extensions>
 
     <actions>

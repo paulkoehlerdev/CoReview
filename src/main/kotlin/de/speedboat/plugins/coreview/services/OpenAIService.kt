@@ -2,6 +2,8 @@ package de.speedboat.plugins.coreview.services;
 
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.diagnostic.thisLogger
+import com.intellij.openapi.project.Project
+import de.speedboat.plugins.coreview.Bundle
 import de.speedboat.plugins.coreview.settings.AppSecrets
 import de.speedboat.plugins.coreview.settings.AppSettingsSecrets
 import dev.langchain4j.internal.Json
@@ -10,23 +12,25 @@ import dev.langchain4j.model.openai.OpenAiChatModel
 import dev.langchain4j.service.AiServices
 import dev.langchain4j.service.SystemMessage
 import dev.langchain4j.service.UserMessage
+import java.lang.IllegalStateException
+import kotlin.reflect.typeOf
 
-@Service(Service.Level.PROJECT)
+@Service(Service.Level.APP)
 class OpenAIService {
 
     class Suggestion(
-            val file: String,
-            val lineStart: Int,
-            val lineEnd: Int,
-            val severity: Float,
-            val title: String,
-            val comment: String,
-            val suggestion: String,
+        val file: String,
+        val lineStart: Int,
+        val lineEnd: Int,
+        val severity: Float,
+        val title: String,
+        val comment: String,
+        val suggestion: String,
     )
 
     interface CodeReviewer {
         @SystemMessage(
-                """
+            """
 You are a senior software developer responsible for reviewing Pull Requests.
 Generate potential review comments with additional metadata, including lines and files referenced. 
 
@@ -47,30 +51,53 @@ You must answer strictly and only in following JSON (without any additional text
         fun getSuggestions(@UserMessage diff: String): String
     }
 
-    private var chatLanguageModel: ChatLanguageModel
-    private var codeReviewer: CodeReviewer
+    private var codeReviewer: CodeReviewer? = null
 
     init {
+        initializeOpenAI()
+    }
+
+    fun initializeOpenAI() {
         val openAiApiKey = AppSettingsSecrets.getSecret(AppSecrets.OPEN_AI_API_KEY)
 
-        chatLanguageModel = OpenAiChatModel.builder()
+        try {
+            val chatLanguageModel = OpenAiChatModel.builder()
                 .apiKey(openAiApiKey)
                 .modelName("gpt-3.5-turbo-1106")
                 .build()
 
-        codeReviewer = AiServices.create(CodeReviewer::class.java, chatLanguageModel)
+            codeReviewer = AiServices.create(CodeReviewer::class.java, chatLanguageModel)
+        } catch (e: Exception) {
+            thisLogger().error(e)
+            CoReviewNotifier.notifyError(null, Bundle.message("coreview.openaiservice.initialapikeyerror"))
+        }
     }
 
     fun getSuggestions(diff: String): List<Suggestion> {
+
+        val openAiApiKey = AppSettingsSecrets.getSecret(AppSecrets.OPEN_AI_API_KEY)
+        thisLogger().warn("OpenAI API Key: $openAiApiKey")
+
+        if (codeReviewer == null) {
+            CoReviewNotifier.notifyError(null, Bundle.message("coreview.openaiservice.apikeyerror"))
+            return emptyList()
+        }
+
         return try {
             thisLogger().warn("Calling OpenAI")
-            val suggestions = codeReviewer.getSuggestions(diff)
+            val suggestions = codeReviewer!!.getSuggestions(diff)
             thisLogger().warn("OpenAI response received")
 
-            return Json.fromJson(suggestions, Array<Suggestion>::class.java)
-                    .toList()
+            return try {
+                Json.fromJson(suggestions, Array<Suggestion>::class.java).toList()
+            } catch (e: Exception) {
+                thisLogger().warn(e)
+                CoReviewNotifier.notifyError(null, Bundle.message("coreview.openaiservice.jsonerror"))
+                emptyList();
+            }
         } catch (e: Exception) {
             thisLogger().error(e)
+            CoReviewNotifier.notifyError(null, Bundle.message("coreview.openaiservice.apikeyerror"))
             emptyList();
         }
     }
