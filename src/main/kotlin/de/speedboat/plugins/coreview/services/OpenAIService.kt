@@ -28,15 +28,15 @@ class OpenAIService {
         @SystemMessage(
             """
 You are a senior software developer responsible for reviewing Pull Requests.
-Generate potential review comments with additional metadata, including lines and files referenced. 
+Generate potential review comments with additional metadata, including lines and files referenced.
 
-The user will call you with the Git diff as an input.
+The user will provide you with the Git diff as input. Ensure that the line references incorporate Git diff line offsets correctly.
 
-You must answer strictly and only in following JSON:
+You must answer strictly and only in the following JSON format:
 [{
   "file": (File path of the code file),
-  "lineStart": (Line number of the start of the code snippet),
-  "lineEnd": (Line number of the end of the code snippet),
+  "lineStart": (Start line number in the original file before applying the Git diff),
+  "lineEnd": (End line number in the original file before applying the Git diff),
   "severity": (Severity of the issue, ranging from 0 (not severe) to 1 (very severe)),
   "title": (Concise title for the issue),
   "comment": (In-depth feedback),
