@@ -5,6 +5,7 @@
     <vendor>Speedboat</vendor>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>Git4Idea</depends>
 
     <resource-bundle>messages.Bundle</resource-bundle>
 
