@@ -51,7 +51,7 @@ Respond strictly and only in the following JSON format:
   "file": (File path of the code file),
   "lineNumber": (Line number in the original file *after applying the Git diff*),
   "lineContent": (The content of the referred line *after applying the Git diff*),
-  "severity": (Severity of the issue, ranging from 0 (not severe) to 1 (very severe)),
+  "severity": (Severity of the issue, ranging from 0 (not severe) to 1 (very severe) in steps of 0.1),
   "title": (Concise title for the issue),
   "comment": (In-depth feedback),
   "suggestion": (Code rewrite suggestions, if applicable)

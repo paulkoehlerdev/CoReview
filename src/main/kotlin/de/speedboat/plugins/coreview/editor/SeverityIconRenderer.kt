@@ -28,8 +28,8 @@ class SeverityIconRenderer(private val suggestion: CoReviewService.SuggestionInf
 
     enum class Severity(val title: String, private val minVal: Float, private val maxVal: Float, val icon: Icon) {
         INFO("Info", 0.0f, 0.4f, AllIcons.General.Information),
-        WARNING("Warning", 0.4f, 0.8f, AllIcons.General.Warning),
-        SEVERE("Severe Warning", 0.8f, 1.0f, AllIcons.General.Error);
+        WARNING("Warning", 0.4f, 0.7f, AllIcons.General.Warning),
+        SEVERE("Severe Warning", 0.7f, 1.0f, AllIcons.General.Error);
 
         companion object {
             fun getSeverity(severity: Float): Severity = Severity.values().stream()
