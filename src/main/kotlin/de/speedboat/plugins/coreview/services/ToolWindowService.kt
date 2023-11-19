@@ -3,12 +3,9 @@ package de.speedboat.plugins.coreview.services
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.thisLogger
-import com.intellij.openapi.fileEditor.FileEditor
-import com.intellij.openapi.fileEditor.FileEditorLocation
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.fileEditor.OpenFileDescriptor
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.ui.SimpleToolWindowPanel
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowAnchor
@@ -27,7 +24,6 @@ import java.awt.event.KeyListener
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import javax.swing.JComponent
-import javax.swing.JPanel
 import javax.swing.JTree
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.DefaultTreeModel
@@ -37,7 +33,7 @@ class ToolWindowService(val project: Project) {
 
     private var toolWindow: ToolWindow? = null
 
-    fun openToolWindow() {
+    fun openOrUpdateToolWindow() {
         val toolWindowManager = ToolWindowManager.getInstance(project)
 
         toolWindowManager.invokeLater {
