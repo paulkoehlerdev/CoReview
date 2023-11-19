@@ -54,6 +54,7 @@ class CoReviewService(private val project: Project) {
 
                 EditorTrackerListenerImpl.updateCurrentActiveEditor(project, this@CoReviewService)
                 toolWindowService.openOrUpdateToolWindow()
+                toolWindowService.activateToolWindow()
             }
         })
 

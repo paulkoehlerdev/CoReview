@@ -1,5 +1,6 @@
 package de.speedboat.plugins.coreview.services
 
+import com.intellij.openapi.application.invokeLater
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.thisLogger
@@ -62,7 +63,18 @@ class ToolWindowService(val project: Project) {
                         false
                     )
             toolWindow?.contentManager?.addContent(content) ?: thisLogger().warn("No Content Added")
-            toolWindow?.activate(null, false)
+        }
+    }
+
+    fun activateToolWindow() {
+        invokeLater {
+            if (toolWindow != null) {
+                toolWindow?.activate(null, false)
+                return@invokeLater
+            }
+
+            openOrUpdateToolWindow()
+            activateToolWindow()
         }
     }
 
