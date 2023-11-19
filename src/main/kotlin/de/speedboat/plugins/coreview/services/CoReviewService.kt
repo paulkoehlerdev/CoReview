@@ -26,6 +26,7 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
 
     private val diffService = project.service<DiffService>()
     private val openAIService = project.service<OpenAIService>()
+    private val toolWindowService = project.service<ToolWindowService>()
 
     private var suggestionList: ArrayList<SuggestionInformation> = ArrayList()
 
@@ -56,21 +57,13 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
                 future.complete(suggestions)
 
                 EditorTrackerListenerImpl.updateCurrentActiveEditor(project, this@CoReviewService)
-
-                invokeLater {
-                    openCoReviewTab()
-                }
+                toolWindowService.openToolWindow()
             }
         })
 
         return future
     }
 
-    private fun openCoReviewTab() {
-        val projectView = ToolWindowManager.getInstance(project)
-        val toolWindow = projectView.getToolWindow("CoReview")
-        toolWindow?.activate(null, false)
-    }
 
     private fun clearSuggestions() {
         suggestionList = ArrayList()
@@ -122,7 +115,6 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
     }
 
     private fun addSuggestion(suggestion: SuggestionInformation) {
-        if (suggestion.file != null) createSuggestionInlay(suggestion)
         suggestionList.add(suggestion)
     }
 
@@ -130,8 +122,18 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
         return suggestionList.toList()
     }
 
+    fun getFiles(): List<VirtualFile> {
+        var out = HashSet<VirtualFile>()
+        suggestionList.forEach { out.add(it.file!!) }
+        return out.toList().sortedWith { a, b -> a.path.compareTo(b.path) }
+    }
+
     fun getSuggestionsFromFile(filePath: String): List<SuggestionInformation> {
         return suggestionList.filter { it.file?.path == filePath }
+    }
+
+    fun getSuggestionsFromFile(file: VirtualFile): List<SuggestionInformation> {
+        return suggestionList.filter { it.file == file }
     }
 
     fun removeSuggestion(suggestion: SuggestionInformation) {
@@ -141,14 +143,6 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
         }
 
         EditorTrackerListenerImpl.updateCurrentActiveEditor(project, this)
-    }
-
-    private fun createSuggestionInlay(suggestionInformation: SuggestionInformation) {
-        invokeLater {
-            thisLogger().warn("opening file ${suggestionInformation.file}")
-
-            FileEditorManager.getInstance(project).openFile(suggestionInformation.file!!)
-        }
     }
 
     fun textFromSuggestion(suggestion: OpenAIService.Suggestion): String {

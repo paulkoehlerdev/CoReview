@@ -10,11 +10,6 @@
     <resource-bundle>messages.Bundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow
-                icon="/icon/icon.svg"
-                factoryClass="de.speedboat.plugins.coreview.toolWindow.ReviewToolWindowFactory"
-                id="CoReview"
-        />
         <checkinHandlerFactory implementation="de.speedboat.plugins.coreview.actions.CoReviewCheckinHandlerFactory"/>
         <applicationService
                 serviceImplementation="de.speedboat.plugins.coreview.settings.AppSettingsState"/>
