@@ -57,7 +57,7 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
                 future.complete(suggestions)
 
                 EditorTrackerListenerImpl.updateCurrentActiveEditor(project, this@CoReviewService)
-                toolWindowService.openToolWindow()
+                toolWindowService.openOrUpdateToolWindow()
             }
         })
 
