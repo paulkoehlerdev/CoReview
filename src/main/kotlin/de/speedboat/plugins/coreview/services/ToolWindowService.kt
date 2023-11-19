@@ -105,6 +105,9 @@ class ToolWindowService(val project: Project) {
 
                 addMouseListener(object : MouseAdapter() {
                     override fun mouseClicked(e: MouseEvent?) {
+                        if (lastSelectedPathComponent == null) {
+                            return
+                        }
                         handlerMethod()
                     }
                 })
@@ -118,6 +121,9 @@ class ToolWindowService(val project: Project) {
 
                     override fun keyReleased(e: KeyEvent?) {
                         if (e?.keyCode == KeyEvent.VK_ENTER) {
+                            if (lastSelectedPathComponent == null) {
+                                return
+                            }
                             handlerMethod()
                         }
                     }
