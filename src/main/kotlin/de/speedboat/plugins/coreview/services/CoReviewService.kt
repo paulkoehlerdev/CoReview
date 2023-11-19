@@ -1,10 +1,8 @@
 package de.speedboat.plugins.coreview.services
 
-import com.intellij.openapi.application.invokeLater
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.thisLogger
-import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.progress.Task
@@ -13,7 +11,6 @@ import com.intellij.openapi.project.guessProjectDir
 import com.intellij.openapi.vcs.changes.Change
 import com.intellij.openapi.vcs.changes.ChangeListManager
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.openapi.wm.ToolWindowManager
 import de.speedboat.plugins.coreview.listeners.EditorTrackerListenerImpl
 import kotlinx.coroutines.CoroutineScope
 import java.nio.file.Files
@@ -95,15 +92,9 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
             }
 
             suggestion.lineNumber += offset
-            suggestion.title = suggestion.title.replace(Regex("line ([0-9]+)")) {
-                "line ${it.groupValues[1].toInt() + offset}"
-            }
-            suggestion.comment = suggestion.comment.replace(Regex("line ([0-9]+)")) {
-                "line ${it.groupValues[1].toInt() + offset}"
-            }
-            suggestion.suggestion = suggestion.suggestion.replace(Regex("line ([0-9]+)")) {
-                "line ${it.groupValues[1].toInt() + offset}"
-            }
+            suggestion.title = replaceLineNumber(suggestion.title, offset)
+            suggestion.comment = replaceLineNumber(suggestion.comment, offset)
+            suggestion.suggestion = replaceLineNumber(suggestion.suggestion, offset)
 
             suggestion.lineNumber = maxOf(suggestion.lineNumber, 1)
             suggestion.lineNumber = minOf(suggestion.lineNumber, lines.size)
@@ -112,6 +103,12 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
 
 
         return SuggestionInformation(suggestion, file)
+    }
+
+    private fun replaceLineNumber(text: String, offset: Int): String {
+        return text.replace(Regex("line ([0-9]+)")) {
+            "line ${it.groupValues[1].toInt() + offset}"
+        }
     }
 
     private fun addSuggestion(suggestion: SuggestionInformation) {
