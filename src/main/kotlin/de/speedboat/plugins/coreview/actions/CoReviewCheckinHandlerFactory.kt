@@ -57,7 +57,12 @@ private class CoReviewCheckinHandler(val project: Project) : CheckinHandler(), C
                     val doc = FileDocumentManager.getInstance().getDocument(it.file!!)
                     val textRange = TextRange(it.suggestion.lineNumber, it.suggestion.lineNumber + 1)
 
-                    CodeSmellInfo(doc!!, it.suggestion.title, textRange, HighlightSeverity.WARNING)
+                    CodeSmellInfo(
+                        doc!!,
+                        it.suggestion.title,
+                        textRange,
+                        HighlightSeverity.WARNING
+                    )
                 }
             }
         }

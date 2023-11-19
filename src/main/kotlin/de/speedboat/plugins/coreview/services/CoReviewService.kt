@@ -25,7 +25,7 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
     private val openAIService = project.service<OpenAIService>()
     private val toolWindowService = project.service<ToolWindowService>()
 
-    private var suggestionList: ArrayList<SuggestionInformation> = ArrayList()
+    private val suggestionList: ArrayList<SuggestionInformation> = ArrayList()
 
     fun triggerCoReview() {
         val changeListManager = ChangeListManager.getInstance(project)
@@ -63,8 +63,9 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
 
 
     private fun clearSuggestions() {
-        suggestionList = ArrayList()
+        suggestionList.clear()
         EditorTrackerListenerImpl.updateCurrentActiveEditor(project, this)
+        toolWindowService.openOrUpdateToolWindow()
     }
 
     private fun mapSuggestion(suggestion: OpenAIService.Suggestion): SuggestionInformation {
@@ -140,6 +141,7 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
         }
 
         EditorTrackerListenerImpl.updateCurrentActiveEditor(project, this)
+        toolWindowService.openOrUpdateToolWindow()
     }
 
     fun textFromSuggestion(suggestion: OpenAIService.Suggestion): String {
