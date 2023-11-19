@@ -12,24 +12,23 @@ import com.intellij.openapi.vcs.changes.Change
 import com.intellij.openapi.vcs.changes.ChangeListManager
 import com.intellij.openapi.vfs.VirtualFile
 import de.speedboat.plugins.coreview.listeners.EditorTrackerListenerImpl
-import kotlinx.coroutines.CoroutineScope
 import java.nio.file.Files
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Future
 
 
 @Service(Service.Level.PROJECT)
-class CoReviewService(private val project: Project, private val coroutineScope: CoroutineScope) {
+class CoReviewService(private val project: Project) {
 
     private val diffService = project.service<DiffService>()
-    private val openAIService = project.service<OpenAIService>()
+    private val openAIService = service<OpenAIService>()
     private val toolWindowService = project.service<ToolWindowService>()
 
     private val suggestionList: ArrayList<SuggestionInformation> = ArrayList()
 
     fun triggerCoReview() {
         val changeListManager = ChangeListManager.getInstance(project)
-        triggerCoReview(changeListManager.allChanges.toList()).get()
+        triggerCoReview(changeListManager.allChanges.toList())
     }
 
     fun triggerCoReview(changelist: List<Change>): Future<List<SuggestionInformation>> {
@@ -47,7 +46,7 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
 
                 val suggestions = diff.parallelStream().flatMap { openAIService.getSuggestions(it).stream() }
                     .map { mapSuggestion(it) }
-                    .filter { it.file != null && it.file.isValid }
+                    .filter { it?.file?.isValid ?: false }
                     .toList()
 
                 suggestions.forEach { addSuggestion(it) }
@@ -76,7 +75,7 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
         if (file != null && !file.fileType.isBinary) {
             val lines = Files.readAllLines(file.toNioPath())
 
-            val maxContext = 20
+            val maxContext = 30
             val lineNumber = suggestion.lineNumber
             val lineContent = suggestion.lineContent.trim()
             var offset = 0
@@ -116,12 +115,8 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
         suggestionList.add(suggestion)
     }
 
-    fun getSuggestions(): List<SuggestionInformation> {
-        return suggestionList.toList()
-    }
-
     fun getFiles(): List<VirtualFile> {
-        var out = HashSet<VirtualFile>()
+        val out = HashSet<VirtualFile>()
         suggestionList.forEach { out.add(it.file!!) }
         return out.toList().sortedWith { a, b -> a.path.compareTo(b.path) }
     }
