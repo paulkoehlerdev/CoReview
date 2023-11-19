@@ -87,7 +87,46 @@ class ToolWindowService(val project: Project) {
                 }
             }
 
-            val tree = Tree(model)
+            val tree = Tree(model).apply {
+                val handlerMethod = {
+                    val node = lastSelectedPathComponent as DefaultMutableTreeNode
+                    val userObject = node.userObject
+
+                    if (userObject is CoReviewService.SuggestionInformation) {
+                        val ofd =
+                            OpenFileDescriptor(
+                                project,
+                                userObject.file!!,
+                                userObject.suggestion.lineNumber - 1,
+                                0
+                            )
+
+                        FileEditorManager
+                            .getInstance(project)
+                            .openTextEditor(ofd, true)
+                    }
+                }
+
+                addMouseListener(object : MouseAdapter() {
+                    override fun mouseClicked(e: MouseEvent?) {
+                        handlerMethod()
+                    }
+                })
+
+                addKeyListener(object : KeyListener {
+                    override fun keyTyped(e: KeyEvent?) {
+                    }
+
+                    override fun keyPressed(e: KeyEvent?) {
+                    }
+
+                    override fun keyReleased(e: KeyEvent?) {
+                        if (e?.keyCode == KeyEvent.VK_ENTER) {
+                            handlerMethod()
+                        }
+                    }
+                })
+            }
             tree.setCellRenderer(CustomTreeCellRenderer(project))
             tree.isRootVisible = false
 
@@ -141,46 +180,6 @@ class ToolWindowService(val project: Project) {
             super.append(suggestion.suggestion.title)
             SeverityIconRenderer.Severity.getSeverity(suggestion.suggestion.severity).icon.let { super.setIcon(it) }
             isOpaque = false
-
-            val openFileHandler = {
-                val ofd = OpenFileDescriptor(project, suggestion.file!!, suggestion.suggestion.lineNumber, 0)
-
-                FileEditorManager
-                    .getInstance(project)
-                    .openTextEditor(ofd, true)
-            }
-
-            this.addMouseListener(object : MouseAdapter() {
-                override fun mousePressed(e: MouseEvent?) {
-                    openFileHandler()
-                    thisLogger().warn("Mouse Pressed")
-                    super.mousePressed(e)
-                }
-
-                override fun mouseClicked(e: MouseEvent?) {
-                    openFileHandler()
-                    thisLogger().warn("Mouse Clicked")
-                    super.mouseClicked(e)
-                }
-            })
-
-            this.addKeyListener(object : KeyListener {
-                override fun keyTyped(e: KeyEvent?) {
-                    if (e?.keyCode == KeyEvent.VK_ENTER) {
-                        openFileHandler()
-                        thisLogger().warn("Key Typed")
-                    }
-                }
-
-                override fun keyPressed(e: KeyEvent?) {
-                    if (e?.keyCode == KeyEvent.VK_ENTER) {
-                        openFileHandler()
-                        thisLogger().warn("Key Pressed")
-                    }
-                }
-
-                override fun keyReleased(p0: KeyEvent?) {}
-            })
         }
     }
 }
