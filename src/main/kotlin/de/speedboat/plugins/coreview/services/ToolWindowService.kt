@@ -143,7 +143,7 @@ class ToolWindowService(val project: Project) {
             isOpaque = false
 
             val openFileHandler = {
-                val ofd = OpenFileDescriptor(project, suggestion.file!!, suggestion.suggestion.lineStart, 0)
+                val ofd = OpenFileDescriptor(project, suggestion.file!!, suggestion.suggestion.lineNumber, 0)
 
                 FileEditorManager
                     .getInstance(project)
