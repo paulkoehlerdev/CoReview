@@ -44,6 +44,7 @@ The user will provide you with the Git diff as input. Follow the Git diff conven
 Ignore from-file-range. Only to-file-range is relevant.
 
 Only refer to modified or added lines, not deleted lines. Always use the line number of the changed file, not the original file.
+The comments and suggestions should be well-structured, easy to understand, and provide actionable feedback to the developer.
 
 Respond strictly and only in the following JSON format:
 [{

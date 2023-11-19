@@ -95,7 +95,7 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
             }
 
             suggestion.lineNumber += offset
-            suggestion.title = suggestion.title.replace(Regex("line ([0-9]+)")) {
+            suggestion.title = suggestion.comment.replace(Regex("line ([0-9]+)")) {
                 "line ${it.groupValues[1].toInt() + offset}"
             }
             suggestion.comment = suggestion.comment.replace(Regex("line ([0-9]+)")) {
