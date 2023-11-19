@@ -12,6 +12,7 @@ import dev.langchain4j.service.AiServices
 import dev.langchain4j.service.SystemMessage
 import dev.langchain4j.service.UserMessage
 import dev.langchain4j.service.V
+import java.time.Duration
 
 @Service(Service.Level.APP)
 class OpenAIService {
@@ -71,6 +72,7 @@ Respond strictly and only in the following JSON format:
         try {
             val chatLanguageModel = OpenAiChatModel.builder()
                 .apiKey(openAiApiKey)
+                .timeout(Duration.ofSeconds(30))
                 .modelName("gpt-3.5-turbo-1106")
                 .build()
 
