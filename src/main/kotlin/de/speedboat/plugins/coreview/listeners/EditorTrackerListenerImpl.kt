@@ -3,7 +3,6 @@ package de.speedboat.plugins.coreview.listeners
 import com.intellij.codeInsight.daemon.impl.EditorTrackerListener
 import com.intellij.openapi.application.invokeLater
 import com.intellij.openapi.components.service
-import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.impl.EditorImpl
 import com.intellij.openapi.fileEditor.FileEditorManager
@@ -26,11 +25,9 @@ class EditorTrackerListenerImpl(val project: Project) : EditorTrackerListener {
             val manager = SuggestionInlaysManager.from(editor as EditorImpl)
             val file = editor.virtualFile
             if (file == null) {
-                thisLogger().warn("editor changed for non-file editor; disposing suggestions")
                 manager.clear()
                 return
             }
-            thisLogger().warn("editor changed for file ${file.name} (managed inlays: ${manager.managedInlays()}); updating suggestions")
             manager.clear()
 
             coReviewService.getSuggestionsFromFile(file.path).forEach {
