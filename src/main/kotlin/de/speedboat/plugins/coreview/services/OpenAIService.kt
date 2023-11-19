@@ -79,7 +79,7 @@ Respond strictly and only in the following JSON format:
 
             codeReviewer = AiServices.create(CodeReviewer::class.java, chatLanguageModel)
         } catch (e: Exception) {
-            thisLogger().error(e)
+            thisLogger().warn(e)
             CoReviewNotifier.notifyError(null, Bundle.message("coreview.openaiservice.initialapikeyerror"))
         }
     }
@@ -107,7 +107,7 @@ Respond strictly and only in the following JSON format:
                 emptyList();
             }
         } catch (e: Exception) {
-            thisLogger().error(e)
+            thisLogger().warn(e)
             CoReviewNotifier.notifyError(null, Bundle.message("coreview.openaiservice.apikeyerror"))
             emptyList();
         }
