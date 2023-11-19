@@ -1,3 +1,5 @@
+![banner](screenshots/banner.jpeg)
+
 # CoReview
 
 An AI Assistant for you Pre-Commit code review.
@@ -24,16 +26,15 @@ And so we set our goal:
 
 <!-- Plugin description -->
 `CoReview` is an AI-based (OpenAI GPT-3.5) automated code review plugin that intelligently scans your uncommitted
-changes,
-providing instant feedback and improving overall code quality beyond what a static linter can provide. `CoReview`
-identifies potential issues,
-ensures adherence to coding standards, and fosters a more productive development environment.
+changes, providing instant feedback and improving overall code quality beyond what a static linter can
+provide. `CoReview` identifies potential issues, ensures adherence to coding standards, and fosters a more productive
+development environment.
 <!-- Plugin description end -->
 
 ## How to use it
 
-Just install the Plugin from the Jetbrains Plugin Marketplace. You will need to provide an OpenAI API key in your
-settings. After that, you can use the plugin by clicking on
+Just install the Plugin from the Jetbrains Plugin Marketplace (coming soon™) or build it from source. You
+will need to provide an OpenAI API key in your settings. After that, you can use the plugin by clicking on
 the `CoReview` (<img src="src/main/resources/icon/icon.svg" alt="logo of the button" height="13px"/>) button in the
 Commit Window. Or by adding `CoReview` to your pre commit checks. `CoReview` will then analyze your changes and provide
 you with suggestions on how to improve your code.
