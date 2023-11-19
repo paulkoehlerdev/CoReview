@@ -44,12 +44,15 @@ class SuggestionInlaysManager(val editor: EditorImpl) : Disposable {
     }
 
     @RequiresEdt
-    fun insertAfter(lineIndex: Int, component: JComponent, suggestion: CoReviewService.SuggestionInformation): Disposable? {
+    fun insertAfter(
+        component: JComponent,
+        suggestion: CoReviewService.SuggestionInformation
+    ): Disposable? {
         if (Disposer.isDisposed(this)) return null
 
         val wrappedComponent = ComponentWrapper(component)
         val gutterRenderer = SeverityIconRenderer(suggestion)
-        val offset = editor.document.getLineEndOffset(lineIndex)
+        val offset = editor.document.getLineEndOffset(suggestion.suggestion.lineNumber - 1)
 
         return EditorEmbeddedComponentManager.getInstance()
             .addComponent(
