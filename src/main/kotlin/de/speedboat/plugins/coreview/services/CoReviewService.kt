@@ -57,7 +57,6 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
                 future.complete(suggestions)
 
                 EditorTrackerListenerImpl.updateCurrentActiveEditor(project, this@CoReviewService)
-                toolWindowService.openToolWindow()
             }
         })
 
@@ -95,15 +94,9 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
             }
 
             suggestion.lineNumber += offset
-            suggestion.title = suggestion.comment.replace(Regex("line ([0-9]+)")) {
-                "line ${it.groupValues[1].toInt() + offset}"
-            }
-            suggestion.comment = suggestion.comment.replace(Regex("line ([0-9]+)")) {
-                "line ${it.groupValues[1].toInt() + offset}"
-            }
-            suggestion.suggestion = suggestion.suggestion.replace(Regex("line ([0-9]+)")) {
-                "line ${it.groupValues[1].toInt() + offset}"
-            }
+            suggestion.title = replaceLineNumber(suggestion.title, offset)
+            suggestion.comment = replaceLineNumber(suggestion.comment, offset)
+            suggestion.suggestion = replaceLineNumber(suggestion.suggestion, offset)
 
             suggestion.lineNumber = maxOf(suggestion.lineNumber, 1)
             suggestion.lineNumber = minOf(suggestion.lineNumber, lines.size)
@@ -112,6 +105,12 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
 
 
         return SuggestionInformation(suggestion, file)
+    }
+
+    private fun replaceLineNumber(text: String, offset: Int): String {
+        return text.replace(Regex("line ([0-9]+)")) {
+            "line ${it.groupValues[1].toInt() + offset}"
+        }
     }
 
     private fun addSuggestion(suggestion: SuggestionInformation) {
