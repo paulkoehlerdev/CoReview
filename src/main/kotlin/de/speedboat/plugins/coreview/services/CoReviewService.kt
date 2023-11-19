@@ -31,9 +31,7 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
 
     fun triggerCoReview() {
         val changeListManager = ChangeListManager.getInstance(project)
-        triggerCoReview(changeListManager.allChanges.toList())
-
-        EditorTrackerListenerImpl.updateCurrentActiveEditor(project, this)
+        triggerCoReview(changeListManager.allChanges.toList()).get()
     }
 
     fun triggerCoReview(changelist: List<Change>): Future<List<SuggestionInformation>> {
@@ -56,6 +54,8 @@ class CoReviewService(private val project: Project, private val coroutineScope: 
 
                 suggestions.forEach { addSuggestion(it) }
                 future.complete(suggestions)
+
+                EditorTrackerListenerImpl.updateCurrentActiveEditor(project, this@CoReviewService)
 
                 invokeLater {
                     openCoReviewTab()
