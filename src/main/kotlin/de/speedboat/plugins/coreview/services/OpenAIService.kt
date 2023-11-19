@@ -49,8 +49,8 @@ The comments and suggestions should be well-structured, easy to understand, and 
 Respond strictly and only in the following JSON format:
 [{
   "file": (File path of the code file),
-  "lineNumber": (Line number in the original file after applying the Git diff),
-  "lineContent": (The contents of the line you are referring to),
+  "lineNumber": (Line number in the original file *after applying the Git diff*),
+  "lineContent": (The content of the referred line *after applying the Git diff*),
   "severity": (Severity of the issue, ranging from 0 (not severe) to 1 (very severe)),
   "title": (Concise title for the issue),
   "comment": (In-depth feedback),
