@@ -7,6 +7,13 @@ An AI Assistant for you Pre-Commit code review.
 <img src="screenshots/wrong_docstring_full.png" alt="Screenshot of the Plugin at work" width="500px">
 <img src="screenshots/replaceLineNumber_suggestion.png" alt="Screenshot of the Plugin at work" width="500px">
 
+> [!NOTE]
+> This project was the second place winner of the Jetbrains Track at hackaTUM 2023. \
+> Thanks to Jetbrains for the great challenge and the awesome prizes! \
+> We had a lot of fun and learned a lot!
+>
+> See our Devpost submission [here](https://devpost.com/software/coreview).
+
 > [!IMPORTANT]
 > This project was created as part of hackaTUM 2023. \
 > This is a hacking project created in just 36hours. This project does not try to be a perfect plugin! \
