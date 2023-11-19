@@ -138,6 +138,7 @@ class CoReviewService(private val project: Project) {
 
         EditorTrackerListenerImpl.updateCurrentActiveEditor(project, this)
         toolWindowService.openOrUpdateToolWindow()
+        toolWindowService.activateToolWindow()
     }
 
     fun textFromSuggestion(suggestion: OpenAIService.Suggestion): String {
