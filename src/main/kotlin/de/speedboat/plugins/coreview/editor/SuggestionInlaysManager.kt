@@ -50,9 +50,11 @@ class SuggestionInlaysManager(val editor: EditorImpl) : Disposable {
     ): Disposable? {
         if (Disposer.isDisposed(this)) return null
 
+        val clampedLineNumber =
+            suggestion.suggestion.lineNumber.coerceAtMost(editor.document.lineCount - 1).coerceAtLeast(0)
         val wrappedComponent = ComponentWrapper(component)
         val gutterRenderer = SeverityIconRenderer(suggestion)
-        val offset = editor.document.getLineEndOffset(suggestion.suggestion.lineNumber - 1)
+        val offset = editor.document.getLineEndOffset(clampedLineNumber)
 
         return EditorEmbeddedComponentManager.getInstance()
             .addComponent(
